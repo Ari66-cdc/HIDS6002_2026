@@ -1,0 +1,24 @@
+## Acknowledgement
+
+Content Adapted directly from [Fundamentals of Data Visualization](https://clauswilke.com/dataviz/index.html) by Claus O. Wilke, 2020
+
+## Roadmap
+:::: {.columns align=center}
+
+::: {.column width="58%"}
+- Basics & Visualizing Amounts
+- Visualizing Distributions
+- Visualizing Proportions
+- Visualizing associations between variables
+- Visualizing trends over time
+- Visualizing uncertainty
+- Strategies to avoid (if time permits)
+:::
+
+::: {.column width="40%"}
+For each topic:
+
+- Brief lecture
+- Hands-on in ggplot2
+:::
+::::

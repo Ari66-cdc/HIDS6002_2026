@@ -1,0 +1,32 @@
+---
+title: "Data Visualization with R"
+author: "Jordan Everson"
+date: 10/19/2026
+format:
+  beamer:
+    theme: metropolis
+    aspectratio: 169
+    fontsize: 12pt
+    navigation: horizontal
+    section-titles: true
+    include-in-header: header.tex
+    mainfont: Trebuchet MS
+    sansfont: Trebuchet MS
+knitr:
+  opts_chunk:
+    dev: cairo_pdf
+---
+
+
+```{r}
+#| include: false
+source("R/setup.R")
+source("R/layouts.R")
+for (f in list.files("R/figures", pattern = "\\.R$",
+                     full.names = TRUE, recursive = TRUE)) source(f)
+```
+
+<!---{{< include sections/00-introduction.qmd >}}
+{{< include sections/01-basics.qmd >}}
+{{< include sections/02-visualizing-amounts.qmd >}} -->
+{{< include sections/02-visualizing-distributions.qmd >}}

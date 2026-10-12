@@ -1,0 +1,111 @@
+---
+title: "ggplot2 in 15 Minutes"
+subtitle: "In-class exercise: aesthetics, bars, dots, and heatmaps"
+format:
+  html:
+    embed-resources: true
+    toc: true
+execute:
+  warning: false
+  message: false
+---
+
+## How this works
+
+Each step below has **working code** and a short **Your turn** task. Edit the code chunk, run it (click the green arrow or press Ctrl+Shift+Enter), and look at the plot. Hints are hidden; click to open them only if you're stuck.
+
+Pace yourself: about 2 minutes per step. If you fall behind, skip ahead to the next step. Every step works on its own.
+
+We'll use `mpg`, a built-in dataset of fuel economy for 234 car models. The main variables:
+
+| Variable | Meaning |
+|---|---|
+| `displ` | Engine size (liters) |
+| `hwy` | Highway miles per gallon |
+| `class` | Type of car (compact, suv, ...) |
+| `drv` | Drive type: `f` front, `r` rear, `4` four-wheel |
+| `manufacturer` | Car maker |
+
+## Step 0: Setup (1 min)
+
+Run this chunk once. If you get an error that the package isn't found, run `install.packages("tidyverse")` in the console first.
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+head(mpg)
+```
+
+## Step 1: Position (2 min)
+
+Every ggplot has three parts: **data**, **aesthetics** (`aes()`, which maps variables to visual properties), and a **geom** (the shape drawn). Here, `displ` maps to the x position and `hwy` to the y position.
+
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point()
+```
+
+**Your turn:** Add axis labels with units by adding `+ labs(x = "...", y = "...")` after `geom_point()`. Try a few different geoms: `geom_point()`, `geom_col()`, `geom_line()`, and `geom_smooth()` will all render something meaningful.
+## Step 2: Color, shape, and size (2 min)
+
+Position is not the only aesthetic. Here, `color` shows a *qualitative* variable (car class).
+
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy, shape = drv)) +
+  geom_point(size = 2)
+```
+
+**Your turn:** Try each of these, one at a time, and notice which ones work well:
+
+1. Add `scale_color_viridis_d()` to switch to a colorblind-safe palette.
+2. Replace `color = class` with `shape = drv`.
+3. Replace `color = class` with `size = cty` (a *continuous* variable). Is size a good choice here?
+
+## Step 3: Bar plot (2 min)
+
+First we summarize the data: mean highway mileage for each car class. Then we plot it.
+
+```{r}
+class_mpg <- mpg |>
+  group_by(class) |>
+  summarize(hwy = mean(hwy))
+
+ggplot(class_mpg, aes(x = class, y = hwy)) +
+  geom_col()
+```
+
+**Your turn:** 
+First, flip this so the bars are horizontal by putting the continuous value on the x axis. Next, The bars are in alphabetical order, which tells the reader nothing. Use `reorder(class, hwy)` and put `class` on the y axis.
+
+## Step 5: Grouped bars (2 min)
+
+Now we add a second categorical variable, drive type, and use color (`fill`) to separate the bars within each class.
+
+```{r}
+class_drv <- mpg |>
+  group_by(class, drv) |>
+  summarize(hwy = mean(hwy), .groups = "drop")
+
+ggplot(class_drv, aes(x = class, y = hwy, fill = drv)) +
+  geom_col(position = "dodge") +
+  scale_fill_viridis_d()
+```
+
+**Your turn:** Swap the roles by changing `x = class, fill = drv` to `x = drv, fill = class`. The bars you want to compare should sit next to each other. Which version answers "how do drive types differ within a class?" and which answers "how do classes differ within a drive type?"
+
+## Step 6: Heatmap (2 min)
+
+With many groups, grouped bars get crowded. A heatmap maps the value to color instead of position. Blank cells are combinations with no cars in the data.
+
+```{r}
+mfr_class <- mpg |>
+  group_by(manufacturer, class) |>
+  summarize(hwy = mean(hwy), .groups = "drop")
+
+ggplot(mfr_class, aes(x = class, y = manufacturer, fill = hwy)) +
+  geom_tile(color = "white") +
+  scale_fill_viridis_c(option = "magma") +
+  labs(x = NULL, y = NULL, fill = "Highway mpg")
+```
+
+**Your turn:** Order the manufacturers by mileage by changing `y = manufacturer` to `y = reorder(manufacturer, hwy)`. Does a pattern appear that wasn't visible before?

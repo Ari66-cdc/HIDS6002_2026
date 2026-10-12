@@ -1,0 +1,124 @@
+# Visualizing Distributions
+
+## Distributions
+
+- How a particular variable is distributed in a dataset
+- Statistics: Mean, median, mode, standard deviation, skewness, kurtosis
+- Visualizations: Histogram, density plot, boxplot, violin plot
+
+## Histograms
+
+:::: {.columns}
+::: {.column width="50%"}
+- Filled rectangles
+- Bin = Width of rectangle = range of values in that bin
+- Height of rectangle = number of observations in that bin
+- Bin width matters for storytelling
+
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("fig-hist", fig_hist(),
+          w = 4.5, h = 3.6, x = 8, y = 2, width = 7.5)
+```
+
+## Density plots
+
+:::: {.columns}
+::: {.column width="50%"}
+- Curve estimated from the data - smooth version of a histogram
+- Area under the curve = 1
+- Height of curve = density of observations at that value
+- Density interpretation: Probability of observing a value in a given range = area under the curve for that range
+- Bandwidth matters for storytelling
+
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("fig-density", fig_density(),
+          w = 4.5, h = 3.6, x = 8, y = 2, width = 7.5)
+```
+
+## Density plots
+:::: {.columns}
+::: {.column width="50%"}
+- Pitfall: smooth across gaps in data or where there are no observations.
+
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("fig-density-bad", fig_density_bad(),
+          w = 4.5, h = 3.6, x = 8, y = 2, width = 7.5)
+```
+
+
+## Two or more distributions
+
+:::: {.columns}
+::: {.column width="50%"}
+- Avoid stacked histograms - hard to compare values
+- Bars start at different points
+- Use side-by-side histograms or density plots instead
+
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("fig-stacked-histogram", fig_stacked_histogram(),
+          w = 4.5, h = 3.6, x = 9, y = 1.4, width = 5)
+place_fig("fig_side-histogram", fig_side_histogram(),
+          w = 4.5, h = 3.6, x = 9, y = 5, width = 5)
+```
+
+## Two or more distributions
+
+:::: {.columns}
+::: {.column width="50%"}
+- Avoid stacked histograms - hard to compare values
+- Bars start at different points
+- Use side-by-side histograms or density plots instead
+
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("fig-two-density", fig_two_density(),
+          w = 4.5, h = 3.6, x = 8, y = 2, width = 7.5)
+```
+
+## Two or more distributions
+
+:::: {.columns}
+::: {.column width="50%"}
+- Density plots extend nicely to more than one distribution
+- Use color to separate distributions
+- Transparency can help with overlapping distributions
+
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("fig-four-density", fig_four_density(),
+          w = 4.5, h = 3.6, x = 8, y = 2, width = 7.5)
+```

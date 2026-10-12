@@ -1,0 +1,102 @@
+# Visualizing Amounts
+
+## Bar plots
+
+:::: {.columns}
+::: {.column width="50%"}
+- Appropriate for continuous-by-categorical data
+
+
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("fig-bar-bad", fig_bar_bad(),
+          w = 4.5, h = 3.6, x = 8, y = 2, width = 7.5)
+```
+
+## Bar plots
+
+:::: {.columns}
+::: {.column width="50%"}
+- Order matters (ascending or descending)
+- Horizontal bars 
+    - Often allow for longer labels
+    - Fit better on standard pages
+    - Worse on standard slides 
+
+
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("fig-bar-good", fig_bar_good(),
+          w = 4.5, h = 3.6, x = 8, y = 2, width = 7.5)
+```
+
+## Grouped bar plots
+
+:::: {.columns}
+::: {.column width="50%"}
+- Appropriate for continuous-by-categorical-by-categorical data
+- Order matters (ascending or descending)
+- Grouping matters - Bars you want to compare should be adjacent
+
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("fig-bar-grouped", fig_bar_grouped(),
+          w = 4.5, h = 3.6, x = 8, y = 2, width = 7.5)
+```
+
+## Dot plots
+
+:::: {.columns}
+::: {.column width="50%"}
+- Appropriate for continuous-by-categorical data
+- Use when you do not want an axis to start at zero
+- Order still matters
+
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("fig-dot", fig_dot(),
+          w = 4.5, h = 3.6, x = 9, y = 1.4, width = 5)
+place_fig("fig-bar-long", fig_bar_long(),
+          w = 4.5, h = 3.6, x = 9, y = 5, width = 5)
+```
+
+## Heatmaps
+
+:::: {.columns}
+::: {.column width="50%"}
+- Appropriate for continuous-by-categorical-by-categorical data
+- Map continuous values to color not position
+- Best when there are many groups in each category and you are implying broad trends not precise values
+- Order still matters
+- Use sequential or diverging color scales that are colorblind safe
+
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("fig-heatmap", fig_heatmap(),
+          w = 4.5, h = 3.6, x = 8, y = 2, width = 7.5)
+```

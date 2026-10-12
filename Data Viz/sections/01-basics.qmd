@@ -1,0 +1,116 @@
+# Basics
+
+## Common Aesthetics
+
+:::: {.columns}
+::: {.column width="50%"}
+- Multiple aesthetic choices
+    - Some convey only qualitative information (shapes)
+    - Some convey quantitative information (position, size, color [qual and quant])
+
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("common-aestheticss", fig_common_aesthetics(),
+          w = 4.5, h = 3.6, x = 8, y = 2, width = 7.5)
+```
+
+## Position
+
+:::: {.columns}
+::: {.column width="50%"}
+- Cartesian coordinates
+    - 2D: x and y
+    - Specify range
+    - Units (label)
+    - Scales should match if x and y are the same unit   
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("cartesian-coordinates", fig_cartesian_coordinates(),
+          w = 4.5, h = 3.6, x = 9, y = 1.4, width = 5)
+place_fig("fig-temp-houston", fig_temp_houston(),
+          w = 4.5, h = 3.6, x = 9, y = 5, width = 5)
+```
+
+## Position
+
+:::: {.columns}
+::: {.column width="50%"}
+- Non-linear scales
+    - Logarithmic
+    - Square root
+    - Other transformations
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("fig-log-scale", fig_log_scale(),
+          w = 4.5, h = 3.6, x = 8, y = 2, width = 7.5)
+```
+## Position
+
+:::: {.columns}
+::: {.column width="50%"}
+- Ratios (Odds, Relative Risk) best displayed on log scale   
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("fig-log-ratio", fig_log_ratio(),
+          w = 4.5, h = 3.6, x = 8, y = 2, width = 7.5)
+```
+
+## Color
+
+:::: {.columns}
+::: {.column width="50%"}
+- Convey both qualitative and quantitative information
+    - Qualitative: categorical variables
+    - Quantitative: continuous variables
+    - Qualitative scales should be distinct and easily distinguishable
+
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("qual-color", qual_color(),
+          w = 4.5, h = 3.6, x = 8, y = 2, width = 7.5)
+```
+## Color
+
+:::: {.columns}
+::: {.column width="50%"}
+- Quantitative color scales
+    - Sequential: single hue, light to dark for intensity
+    - Diverging: two hues, light to dark for difference from a midpoint
+      
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("quant-color-seq", quant_color_seq(),
+          w = 4.5, h = 3.6, x = 9, y = 1.4, width = 5)
+place_fig("quant-color-div", quant_color_div(),
+          w = 4.5, h = 3.6, x = 9, y = 5, width = 5)
+```
