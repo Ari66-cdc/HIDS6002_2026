@@ -1,0 +1,144 @@
+# Visualizing Associations
+
+## Scatter plots
+
+:::: {.columns}
+::: {.column width="50%"}
+- Appropriate for two continuous variables
+- Each point is one observation
+- Look for direction, strength, and shape of the relationship
+- Example: head length vs. body mass in blue jays
+
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("fig-blue-jays-scatter", fig_blue_jays_scatter(),
+          w = 4.5, h = 3.4, x = 8.5, y = 2, width = 7)
+```
+
+## Bubble charts
+
+:::: {.columns}
+::: {.column width="50%"}
+- Map a third continuous variable to point size (here, skull size)
+- Color or facets can add a categorical variable (here, sex)
+- Differences in bubble size are hard to see
+
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("fig-blue-jays-scatter-bubbles", fig_blue_jays_scatter_bubbles(),
+          w = 6.5, h = 3.6, x = 8.3, y = 2, width = 7.4)
+```
+
+## Correlations
+
+:::: {.columns}
+::: {.column width="50%"}
+- Correlation coefficient *r* ranges from -1 to 1
+- Sign = direction; magnitude = strength
+- *r* = 0 means no linear association
+- Same *x* and *y* values in every panel, only the pairing changes
+
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("fig-correlations", fig_correlations(),
+          w = 6.4, h = 4.2, x = 8.5, y = 1.8, width = 7)
+```
+
+## Correlograms
+
+:::: {.columns}
+::: {.column width="50%"}
+- Summarize many pairwise correlations at once
+- Color = direction and strength; circle size = magnitude
+- Size de-emphasizes correlations near zero
+- Pitfall: abstract, and hides the underlying data
+
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("fig-forensic-correlations2", fig_forensic_correlations2(),
+          w = 4, h = 4, x = 9, y = 1.4, width = 5.8)
+```
+
+## Summary of differences across groups
+
+:::: {.columns}
+::: {.column width="50%"}
+- Point = estimate; error bar = confidence interval
+- Say what the bars represent (here, a 95% CI)
+- Must select a reference group – here, chocolate from the US
+- Dashed line at 0 = no difference from the reference group
+- Could use aesthetics to highlight intervals that cross zero
+
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("fig-confidence-visualizations-p2", fig_confidence_visualizations_p2(),
+          w = 5.5, h = 3.5, x = 8, y = 2, width = 7.5)
+```
+
+## Using fitted lines to see associations
+
+:::: {.columns}
+::: {.column width="50%"}
+- Confidence band: range of plausible fitted lines
+- Confidence bands resemble alternative possible draws from the data
+- Both show the same uncertainty in different ways
+- Draws help avoid reading the band as exact
+
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("fig-blue-jays-male-conf-band", fig_blue_jays_male_conf_band(),
+          w = 5.5, h = 3.0, x = 8.8, y = 0.9, width = 6.4)
+place_fig("fig-blue-jays-male-fitted-draws", fig_blue_jays_male_fitted_draws(),
+          w = 5.5, h = 3.0, x = 8.8, y = 4.8, width = 6.4)
+```
+
+## Using fitted lines to see associations
+
+:::: {.columns}
+::: {.column width="50%"}
+- Same data, four different fits
+- Linear: simple but may miss curvature
+- Quadratic and cubic: bend, but can behave oddly at the ends
+- Spline: flexible; follows the data most closely
+- Choice of model can increase complexity and highlight storytelling
+
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("fig-fit-comparison", fig_fit_comparison(),
+          w = 5.5, h = 4.4, x = 8.3, y = 1.4, width = 7)
+```

@@ -1,0 +1,35 @@
+---
+title: "Data Visualization with R"
+author: "Jordan Everson"
+date: 10/19/2026
+format:
+  beamer:
+    aspectratio: 169
+    pdf-engine: xelatex
+    mainfont: "Georgia"          # or "Adobe Caslon Pro" if you have it installed
+    sansfont: Arial
+    include-in-header: 
+    - header.tex
+    - georgetown.tex
+    fontsize: 12pt
+    section-titles: true
+knitr:
+  opts_chunk:
+    dev: cairo_pdf
+---
+
+
+```{r}
+#| include: false
+source("R/setup.R")
+source("R/layouts.R")
+for (f in list.files("R/figures", pattern = "\\.R$",
+                     full.names = TRUE, recursive = TRUE)) source(f)
+```
+
+{{< include sections/00-introduction.qmd >}}
+{{< include sections/01-basics.qmd >}}
+{{< include sections/02-visualizing-amounts.qmd >}}
+{{< include sections/03-visualizing-distributions.qmd >}}
+{{< include sections/04-visualizing-associations.qmd >}}
+{{< include sections/05-time-series-and-trends.qmd >}}

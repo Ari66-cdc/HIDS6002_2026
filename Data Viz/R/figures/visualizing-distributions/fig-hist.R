@@ -24,7 +24,7 @@ fig_hist <- function(font_size = 12) {
     count = hist(titanic$age, breaks = (0:5) * 15 + .01, plot = FALSE)$counts
     )
 
-h1 <- ggplot(age_hist, aes(x = age, y = count)) + geom_col(width = 4.7, fill = "#56B4E9")  + 
+h1 <- ggplot(age_hist, aes(x = age, y = count)) + geom_col(width = 4.0, fill = "#56B4E9")  + 
   scale_y_continuous(expand = c(0, 0), breaks = 25 * (0:5)) +
   scale_x_continuous(name = "age (years), bin 5", limits = c(0, 75), expand = c(0, 0)) +
   coord_cartesian(clip = "off") +
@@ -34,7 +34,7 @@ h1 <- ggplot(age_hist, aes(x = age, y = count)) + geom_col(width = 4.7, fill = "
     plot.margin = margin(3, 7, 3, 1.5)
   )
     h2 <- ggplot(age_hist_1, aes(x = age, y = count)) + 
-    geom_col(width = .85, fill = "#56B4E9")  + 
+    geom_col(width = .65, fill = "#56B4E9")  + 
     scale_y_continuous(expand = c(0, 0), breaks = 10 * (0:5)) +
     scale_x_continuous(name = "age (years), bin 1", limits = c(0, 75), expand = c(0, 0)) +
     coord_cartesian(clip = "off") +
@@ -44,7 +44,7 @@ h1 <- ggplot(age_hist, aes(x = age, y = count)) + geom_col(width = 4.7, fill = "
         plot.margin = margin(3, 1.5, 3, 1.5)
     )
 
-    h3 <- ggplot(age_hist_3, aes(x = age, y = count)) + geom_col(width = 2.75, fill = "#56B4E9")  + 
+    h3 <- ggplot(age_hist_3, aes(x = age, y = count)) + geom_col(width = 2.2, fill = "#56B4E9")  + 
     scale_y_continuous(expand = c(0, 0), breaks = 25 * (0:5)) +
     scale_x_continuous(name = "age (years), bin 3", limits = c(0, 75), expand = c(0, 0)) +
     coord_cartesian(clip = "off") +
@@ -54,7 +54,7 @@ h1 <- ggplot(age_hist, aes(x = age, y = count)) + geom_col(width = 4.7, fill = "
         plot.margin = margin(3, 1.5, 3, 1.5)
     )
 
-    h4 <- ggplot(age_hist_15, aes(x = age, y = count)) + geom_col(width = 14.5, fill = "#56B4E9")  + 
+    h4 <- ggplot(age_hist_15, aes(x = age, y = count)) + geom_col(width = 12, fill = "#56B4E9")  + 
     scale_y_continuous(expand = c(0, 0), breaks = 100 * (0:4)) +
     scale_x_continuous(name = "age (years), bin 15", limits = c(0, 75), expand = c(0, 0)) +
     coord_cartesian(clip = "off") +

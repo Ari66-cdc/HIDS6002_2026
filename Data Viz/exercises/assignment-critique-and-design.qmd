@@ -1,0 +1,94 @@
+---
+title: "Assignment: Critique and Design a Figure"
+subtitle: "Remote blood pressure monitoring program (simulated data)"
+format:
+  html:
+    embed-resources: true
+    toc: true
+execute:
+  warning: false
+  message: false
+---
+
+Put this file in the project folder next to `rpm-setup.R` and the `data` folder, then run the setup chunk.
+
+```{r}
+source("rpm-setup.R")
+```
+
+## Part 1: Critique and repair
+
+The chart below was made for a program report. It contains **eight** problems, ranging from small to serious. Not every choice in it is a mistake. Find **at least five**, and for each one:
+
+1. Name the problem.
+2. Say why it matters to someone reading the chart.
+3. Fix it in code.
+
+Run the chunk and look at the chart first. Ask what a reader would conclude from it, and whether the data support that conclusion. (Hint: check what is being summed or averaged, and what each bar is really measuring.)
+
+```{r}
+#| label: bad-chart
+#| fig-width: 8
+#| fig-height: 5
+
+# One row per clinic: total systolic BP reduction among its patients
+bad <- aggregate(sbp_reduction ~ clinic, data = patients, FUN = sum)
+names(bad)[2] <- "total_reduction"
+bad$clinic <- factor(bad$clinic, levels = sort(as.character(bad$clinic)))
+
+ggplot(bad, aes(x = clinic, y = total_reduction, fill = clinic)) +
+  geom_col() +
+  coord_cartesian(ylim = c(0.8 * min(bad$total_reduction),
+                           1.02 * max(bad$total_reduction))) +
+  scale_fill_manual(values = rainbow(nlevels(bad$clinic))) +
+  labs(title = "Results by Clinic", x = "Clinic", y = "SBP (mmHg)") +
+  theme_gray(base_size = 13) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        panel.border = element_rect(colour = "black", fill = NA, linewidth = 1.2),
+        panel.grid.major = element_line(colour = "grey40"),
+        panel.grid.minor = element_line(colour = "grey70"))
+```
+
+### Your answers
+
+Write one short entry per problem, using the format below (copy it for each of your five or more).
+
+**Problem 1:** (name it)
+
+**Why it matters:** (one or two sentences)
+
+**Fix:** (a sentence on what you changed; the code goes in the chunk below)
+
+### Your repaired chart
+
+Combine all of your fixes into one chart. Keep the code readable and explain the intent of each step in a comment.
+
+```{r}
+#| label: fixed-chart
+
+# Your code here
+```
+
+## Part 2: Choose and justify a figure
+
+The scenario, the deliverables, and the questions to answer are in the assignment document. Your figure goes in the chunk below, and the memo and takeaway go below it as text.
+
+```{r}
+#| label: part2-figure
+
+# Start here: what comparison does the committee need? Look at patients
+# (total_readings, sbp_reduction, age_group, device_type, clinic) and
+# clinic_summary before you choose a chart type.
+```
+
+### Takeaway (three sentences)
+
+(Write here.)
+
+### Design memo (200 words or fewer)
+
+(Write here.)
+
+## AI statement
+
+(Describe how you used AI, if at all, in completing this assignment.)

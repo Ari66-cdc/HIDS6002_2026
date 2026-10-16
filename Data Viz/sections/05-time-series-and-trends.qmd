@@ -1,0 +1,144 @@
+# Time Series and Trends
+
+## Time Series
+
+:::: {.columns}
+::: {.column width="50%"}
+- Time on the *x* axis, a measurement on the *y* axis
+- Connecting dots with lines shows order and trend
+- The lines are a guide to the eye, not data
+- Slopegraph: a few cases over a few time points
+- Slope shows the size and direction of change
+- Example: CO~2~ emissions per person, 2000--2010
+
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("fig-co2-slopegraph-three-year", fig_co2_slopegraph_three_year(),
+          w = 4.5, h = 4.5, x = 9, y = 1.2, width = 6.3)
+```
+
+## Individual time series
+
+:::: {.columns}
+::: {.column width="50%"}
+- Time on the *x* axis, a measurement on the *y* axis
+- Connecting dots with lines shows order and trend
+- The lines are a guide to the eye, not data
+- Example: monthly bioRxiv preprint submissions
+
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("fig-biorxiv-dots-line", fig_biorxiv_dots_line(),
+          w = 4.5, h = 3.6, x = 8, y = 2, width = 7.5)
+```
+
+## Line and area plots
+
+:::: {.columns}
+::: {.column width="50%"}
+- Shading under the line emphasizes the magnitude, not just the trend
+- Area plot appropriate when the *y* axis starts at zero
+- Removing dots and adding area shading highlights overall trend relative to points
+
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("fig-biorxiv-line-area", fig_biorxiv_line_area(),
+          w = 4.5, h = 3.6, x = 8, y = 2, width = 7.5)
+```
+
+## Multiple time series
+
+:::: {.columns}
+::: {.column width="50%"}
+- Dots with a legend: hard to match colors and shapes to series
+- Direct labels at line ends are easier to read
+- Lines make each series' trend clear
+- Order labels to match line ends
+
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("fig-bio-preprints-dots", fig_bio_preprints_dots(),
+          w = 4.5, h = 3.6, x = 9.5, y = 1.6, width = 4.2)
+place_fig("fig-bio-preprints-direct-label", fig_bio_preprints_direct_label(),
+          w = 4.5, h = 3.6, x = 9.5, y = 5.0, width = 4.2)
+```
+
+## Dose--response curves
+
+:::: {.columns}
+::: {.column width="50%"}
+- The same line-plot approach works when *x* is not time
+- *x* = treatment level (manure), *y* = mean response (oat yield)
+- One line per group (variety) makes comparisons easy
+- Use distinct colors and shapes for each group
+
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("fig-oats-yield", fig_oats_yield(),
+          w = 4.5, h = 3.6, x = 8, y = 2, width = 7.5)
+```
+
+## Moving averages
+
+:::: {.columns}
+::: {.column width="50%"}
+- Smooth noisy time series by averaging over a window
+- Window length sets the scale of fluctuations that remain
+- Trailing average (top) lags the data; centered average (bottom) does not
+- Limits: shorter than the original series, and still wiggly
+
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("fig-dow-jones-moving-ave", fig_dow_jones_moving_ave(),
+          w = 6.5, h = 6.5, x = 8.5, y = 1.2, width = 7)
+```
+
+## Smoothers
+
+:::: {.columns}
+::: {.column width="50%"}
+- LOESS and GAMs fit smooth curves to scatter data
+- Panel a is LOESS; panels b--d use different GAM settings
+- Results depend heavily on the smoother and its parameters
+- Try several choices before trusting a trend
+
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("fig-tank-capacity-smoothers", fig_tank_capacity_smoothers(),
+          w = 7.5, h = 5.6, x = 8, y = 1.5, width = 7.8)
+```

@@ -1,0 +1,17 @@
+"clinic","device_type","n_patients","pct_controlled"
+"Eastgate","Bluetooth",18,50
+"Eastgate","Cellular",22,36.4
+"Harbor","Bluetooth",48,35.4
+"Harbor","Cellular",30,60
+"Hillcrest","Bluetooth",13,23.1
+"Hillcrest","Cellular",19,21.1
+"Lakeview","Bluetooth",29,44.8
+"Lakeview","Cellular",33,60.6
+"Maple Grove","Bluetooth",18,22.2
+"Maple Grove","Cellular",12,25
+"Northside","Bluetooth",31,38.7
+"Northside","Cellular",39,48.7
+"Riverside","Bluetooth",22,31.8
+"Riverside","Cellular",32,59.4
+"Westfield","Bluetooth",16,37.5
+"Westfield","Cellular",18,72.2

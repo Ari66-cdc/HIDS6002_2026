@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.11" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>ggplot2 Syntax Reference</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 60em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">ggplot2 Syntax Reference</h1>
+</header>
+<h1 id="ggplot2-syntax-reference-r">ggplot2 Syntax Reference (R)</h1>
+<h2 id="how-a-plot-is-built">1. How a plot is built</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> x_col, <span class="at">y =</span> y_col)) <span class="sc">+</span>      <span class="co"># data + what maps to what</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span>                              <span class="co"># one layer per geom</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;X label&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Y label&quot;</span>)          <span class="co"># layers are added with +</span></span></code></pre></div>
+<p>A plot is a stack of layers joined with <code>+</code>. Layers are
+drawn in the order you add them, so later layers sit on top of earlier
+ones.</p>
+<p><strong>Mapping vs. setting.</strong> A value inside
+<code>aes()</code> is <em>mapped</em> to a column (one color per
+category, for example). A value outside <code>aes()</code> is
+<em>set</em> for every mark.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> category))   <span class="co"># color depends on the data</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">&quot;steelblue&quot;</span>)     <span class="co"># every point is steelblue</span></span></code></pre></div>
+<p><strong><code>+</code> goes at the end of the line, not the
+start.</strong> A line that begins with <code>+</code> is a new
+statement, and R will either error or silently drop the rest of the
+plot.</p>
+<hr />
+<h2 id="choosing-a-geom">2. Choosing a geom</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">x =</span> category, <span class="at">y =</span> value))     <span class="co"># bar height = a value you already have</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">x =</span> category))                <span class="co"># bar height = a count of rows, computed for you</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> x_col))             <span class="co"># distribution of one number</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">x =</span> x_col))               <span class="co"># smoothed distribution</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> category, <span class="at">y =</span> x_col)) <span class="co"># distribution by group</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_violin</span>(<span class="fu">aes</span>(<span class="at">x =</span> category, <span class="at">y =</span> x_col)) <span class="co"># distribution by group, shape visible</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> x_col, <span class="at">y =</span> y_col))      <span class="co"># two numbers per row</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> date_col, <span class="at">y =</span> y_col))    <span class="co"># ordered in time (x can be non-date but needs an order)</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_pointrange</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> lo, <span class="at">xmax =</span> hi)) <span class="co"># a point with an interval</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> lo, <span class="at">ymax =</span> hi))     <span class="co"># a shaded band around a line</span></span></code></pre></div>
+<hr />
+<h2 id="frequency-and-proportions">3. Frequency and Proportions</h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x=</span>category)) <span class="sc">+</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">fill =</span> group), <span class="at">width =</span> <span class="fl">0.6</span>, <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.7</span>))</span></code></pre></div>
+<p><strong><code>geom_col()</code> plots values; <code>geom_bar()</code>
+counts rows.</strong> If your data already has one row per bar with its
+height in a column, use <code>geom_col()</code>. Using
+<code>geom_bar()</code> on that data just counts the rows (and every bar
+comes out the same height).</p>
+<p><strong>Position</strong> controls how bars for different groups are
+placed within a category:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>position <span class="ot">=</span> <span class="st">&quot;stack&quot;</span>                    <span class="co"># groups stacked on top of each other (the default with fill)</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>position <span class="ot">=</span> <span class="st">&quot;dodge&quot;</span>                    <span class="co"># groups side by side</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>position <span class="ot">=</span> <span class="st">&quot;fill&quot;</span>                     <span class="co"># stacked and scaled to 100%, to compare proportions</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>position <span class="ot">=</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.7</span>)   <span class="co"># side by side, with control over spacing</span></span></code></pre></div>
+<p><strong>Width</strong> controls how wide each bar is, from 0 to 1
+(the default is 0.9; at 1 bars touch). For grouped bars,
+<code>width</code> is each bar’s width and
+<code>position_dodge(width = )</code> is the space one category takes up
+in total. Keep the dodge width a little larger than <code>width</code>
+for a small gap between groups. If it is smaller, the bars overlap.</p>
+<hr />
+<h2 id="distributions">4. Distributions</h2>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> x_col)) <span class="sc">+</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">5</span>, <span class="at">boundary =</span> <span class="dv">130</span>,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">fill =</span> <span class="st">&quot;#56B4E9&quot;</span>, <span class="at">color =</span> <span class="st">&quot;white&quot;</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> x_col)) <span class="sc">+</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">after_stat</span>(density)), <span class="at">binwidth =</span> <span class="dv">5</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>                 <span class="at">fill =</span> <span class="st">&quot;grey85&quot;</span>, <span class="at">color =</span> <span class="st">&quot;white&quot;</span>) <span class="sc">+</span>   <span class="co"># histogram on the density scale</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">adjust =</span> <span class="fl">0.5</span>, <span class="at">bounds =</span> <span class="fu">c</span>(<span class="dv">130</span>, <span class="cn">Inf</span>))      <span class="co"># smaller adjust = follows data more closely</span></span></code></pre></div>
+<ul>
+<li><strong><code>binwidth</code></strong> is your choice and it changes
+the story. Try several before committing: narrow bins show noise, wide
+bins hide structure.</li>
+<li><strong><code>boundary</code></strong> pins where a bin starts (set
+it to the lowest possible value so the first bar is not straddling
+it).</li>
+<li><strong><code>bounds</code></strong> in <code>geom_density()</code>
+tells the curve that no data can fall outside a range (such as below a
+minimum enrollment value), so the smoothing does not spill past it. It
+needs a recent ggplot2 (3.4.0 or later).</li>
+</ul>
+<p><strong>A Q-Q plot checks whether data look normal.</strong></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">sample =</span> x_col)) <span class="sc">+</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_qq</span>() <span class="sc">+</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_qq_line</span>()          <span class="co"># points on the line = roughly normal</span></span></code></pre></div>
+<hr />
+<h2 id="comparing-groups">5. Comparing groups</h2>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> x_col, <span class="at">y =</span> category)) <span class="sc">+</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">&quot;grey90&quot;</span>, <span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span>   <span class="co"># no outlier dots if points follow</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="dv">0</span>, <span class="at">height =</span> <span class="fl">0.15</span>, <span class="at">alpha =</span> <span class="fl">0.4</span>)    <span class="co"># every observation as a dot</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> x_col, <span class="at">y =</span> category)) <span class="sc">+</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="at">fill =</span> <span class="st">&quot;grey90&quot;</span>)                          <span class="co"># same layout, shape instead of box</span></span></code></pre></div>
+<p><strong>Put long category labels on the y axis</strong> (as above) so
+they stay horizontal and readable.</p>
+<p><strong>When you add jittered points to a boxplot, turn off the
+boxplot’s own outlier dots</strong> (<code>outlier.shape = NA</code>),
+or each outlier is drawn twice. On a horizontal plot, jitter vertically
+(<code>height</code>), not horizontally.</p>
+<p><strong>A violin shows shape; it can also invent shape.</strong> The
+smooth outline extends past the data and looks equally confident for a
+group of 10 and a group of 500. Overlay the points or label the group
+sizes.</p>
+<p><strong>Sort categories by a value with
+<code>reorder()</code>.</strong></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">reorder</span>(category, x_col))                    <span class="co"># sorts by the MEAN by default</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">reorder</span>(category, x_col, <span class="at">FUN =</span> median))      <span class="co"># sorts by the median instead</span></span></code></pre></div>
+<p><code>reorder()</code> sorts by the <strong>mean</strong> unless you
+tell it otherwise. If the plot shows medians (a boxplot’s center line),
+sort by <code>FUN = median</code> or the order will not match what the
+reader sees.</p>
+<hr />
+<h2 id="facets-small-multiples">6. Facets (small multiples)</h2>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">facet_wrap</span>(<span class="sc">~</span> category)                    <span class="co"># one panel per category</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">facet_wrap</span>(<span class="sc">~</span> category, <span class="at">ncol =</span> <span class="dv">2</span>)          <span class="co"># control the layout</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">facet_grid</span>(rows_col <span class="sc">~</span> cols_col)           <span class="co"># one variable on each side of ~</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">facet_wrap</span>(<span class="sc">~</span> category, <span class="at">scales =</span> <span class="st">&quot;free_y&quot;</span>) <span class="co"># each panel gets its own y axis</span></span></code></pre></div>
+<p><strong>Fixed axes let you compare panels; free axes hide
+differences.</strong> Use free scales only when you can justify it,
+since panels with different axes look more alike than they are.</p>
+<p><strong>Every split costs sample size.</strong> A grid of six panels
+from 400 patients leaves roughly 65 per panel, and the noise gets louder
+as the panels get smaller.</p>
+<p><strong>Per-panel reference lines need their own data
+frame.</strong></p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_vline</span>(<span class="at">data =</span> group_summary, <span class="fu">aes</span>(<span class="at">xintercept =</span> median_value),</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">&quot;firebrick&quot;</span>)           <span class="co"># one line per panel</span></span></code></pre></div>
+<hr />
+<h2 id="relationships">7. Relationships</h2>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> x_col, <span class="at">y =</span> y_col)) <span class="sc">+</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span>                       <span class="co"># transparency shows overplotting</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span>        <span class="co"># straight-line fit</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>) <span class="co"># &quot;no change&quot; reference</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_smooth</span>()                                      <span class="co"># default: a flexible curve (loess)</span></span></code></pre></div>
+<ul>
+<li><strong>Compare <code>geom_smooth()</code> with
+<code>method = "lm"</code>.</strong> If the curve and the straight line
+disagree, the relationship is not a straight line.</li>
+<li><strong><code>alpha</code> lower than 1</strong> makes dense areas
+darker so overplotted points stay visible.</li>
+<li><strong>A reference line is part of the chart.</strong> A dashed
+zero line answers “did it improve?” without the reader having to find
+zero.</li>
+</ul>
+<p><strong>A log axis spreads out small values.</strong></p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">scale_x_log10</span>()                                  <span class="co"># each doubling = same distance</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">scale_x_log10</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">30</span>, <span class="dv">100</span>, <span class="dv">300</span>))      <span class="co"># choose readable ticks</span></span></code></pre></div>
+<p>You cannot take the log of zero. Rows with zero values drop off a log
+axis, so say how many were removed or handle them on purpose.</p>
+<hr />
+<h2 id="intervals-and-labels-on-marks">8. Intervals and labels on
+marks</h2>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> estimate, <span class="at">y =</span> <span class="fu">reorder</span>(category, estimate))) <span class="sc">+</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_pointrange</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> ci_low, <span class="at">xmax =</span> ci_high)) <span class="sc">+</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>) <span class="sc">+</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">round</span>(estimate, <span class="dv">1</span>)), <span class="at">nudge_y =</span> <span class="fl">0.3</span>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="fu">round</span>(estimate, <span class="dv">1</span>), <span class="st">&quot; (n=&quot;</span>, n, <span class="st">&quot;)&quot;</span>)),</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>          <span class="at">nudge_y =</span> <span class="fl">0.3</span>)                         <span class="co"># build a label from several columns</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> name), <span class="at">check_overlap =</span> <span class="cn">TRUE</span>)   <span class="co"># skip labels that would collide</span></span></code></pre></div>
+<ul>
+<li><strong><code>nudge_y</code></strong> lifts the label off the mark
+so it does not cover it.</li>
+<li><strong><code>paste0()</code></strong> stitches text and numbers
+together with no separator.</li>
+<li><strong>An interval that crosses the reference line</strong> means
+the data cannot separate that group from “no change.”</li>
+<li><strong>Show n next to an interval.</strong> The reader can then see
+why some intervals are wide.</li>
+</ul>
+<hr />
+<h2 id="scales-limits-and-zoom">9. Scales, limits, and zoom</h2>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="cn">NA</span>))                       <span class="co"># NA = keep the default for that end</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.05</span>)))   <span class="co"># 0% below, 5% above</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">add =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">10</span>)))      <span class="co"># padding in data units</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">160</span>))                         <span class="co"># zoom, keep all data</span></span></code></pre></div>
+<ul>
+<li><strong><code>mult</code> is a fraction of the data range;
+<code>add</code> is in data units.</strong></li>
+<li><strong>Remove the gap under bars</strong> with
+<code>expansion(mult = c(0, 0.05))</code>: bars and histograms should
+sit on the axis. Extra room at the top is useful when you want space for
+a label.</li>
+</ul>
+<p><strong><code>limits</code> removes data;
+<code>coord_cartesian()</code> zooms.</strong> Setting
+<code>limits</code> in a scale drops every row outside it before
+anything is computed, so fits, bins, and summaries can change.
+<code>coord_cartesian(ylim = ...)</code> only changes the visible
+window.</p>
+<p><strong>Whether to start at zero depends on the mark.</strong></p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Mark</th>
+<th>Encodes value by</th>
+<th>Truncated axis</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bar</td>
+<td>length</td>
+<td>Misleading (half the height reads as half the value)</td>
+</tr>
+<tr>
+<td>Dot, line, point</td>
+<td>position</td>
+<td>Often fine, and sometimes necessary to see a real difference</td>
+</tr>
+</tbody>
+</table>
+<p>If bars would need a truncated axis to be readable, switch to a dot
+or point-and-interval plot. Either way, label the axis and choose the
+range on purpose.</p>
+<hr />
+<h2 id="time-series">10. Time series</h2>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> date_col, <span class="at">y =</span> y_col)) <span class="sc">+</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_date</span>(<span class="at">date_breaks =</span> <span class="st">&quot;2 months&quot;</span>, <span class="at">date_labels =</span> <span class="st">&quot;%b %Y&quot;</span>,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">minor_breaks =</span> <span class="cn">NULL</span>)</span></code></pre></div>
+<ul>
+<li><strong><code>%b</code></strong> month abbreviation,
+<strong><code>%B</code></strong> full month name,
+<strong><code>%d</code></strong> day, <strong><code>%Y</code></strong>
+four-digit year, <strong><code>%y</code></strong> two-digit year.</li>
+<li><strong><code>minor_breaks = NULL</code></strong> removes the extra
+gridlines between ticks.</li>
+<li><strong>The <code>x</code> column must be a real date</strong>, not
+text, or the axis will not behave as a date axis.</li>
+</ul>
+<p><strong>Mark an event with a vertical line and a label.</strong></p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">as.Date</span>(<span class="st">&quot;2025-06-02&quot;</span>), <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>) <span class="sc">+</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="at">x =</span> <span class="fu">as.Date</span>(<span class="st">&quot;2025-06-02&quot;</span>), <span class="at">y =</span> <span class="cn">Inf</span>,</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">label =</span> <span class="st">&quot;Protocol starts&quot;</span>, <span class="at">hjust =</span> <span class="fl">1.05</span>, <span class="at">vjust =</span> <span class="fl">1.5</span>)</span></code></pre></div>
+<p><code>y = Inf</code> pins the label to the top of the panel.
+<strong><code>hjust = 1.05</code> puts text to the left of the line; a
+negative value puts it to the right.</strong> <code>xintercept</code>
+accepts a vector of dates.</p>
+<p><strong>Shade a window of time, behind the data.</strong></p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">annotate</span>(<span class="st">&quot;rect&quot;</span>, <span class="at">xmin =</span> start, <span class="at">xmax =</span> end,</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">ymin =</span> <span class="sc">-</span><span class="cn">Inf</span>, <span class="at">ymax =</span> <span class="cn">Inf</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span>   <span class="co"># add this BEFORE geom_line()</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_line</span>()</span></code></pre></div>
+<p>Layers are drawn in order, so a rectangle added after the line covers
+the line. Add it first.</p>
+<p><strong>Smoothing costs resolution.</strong> A trailing average uses
+this week and the weeks before it (usable live, lags behind). A centered
+average looks both ways (better for reports, but has gaps at both ends).
+A wide window can erase real, short events such as holiday dips.</p>
+<hr />
+<h2 id="color-and-legends">11. Color and legends</h2>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">scale_color_viridis_d</span>(<span class="at">end =</span> <span class="fl">0.7</span>)               <span class="co"># perceptually even, color-blind safe</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;#0072B2&quot;</span>, <span class="st">&quot;#D55E00&quot;</span>))</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)                <span class="co"># drop the legend</span></span></code></pre></div>
+<p><strong>Label lines directly instead of using a legend.</strong> The
+reader does not have to look back and forth.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># end_label holds the group name on the last row of each line, NA elsewhere</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> end_label), <span class="at">hjust =</span> <span class="sc">-</span><span class="fl">0.1</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">scale_x_date</span>(<span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="fl">0.02</span>, <span class="fl">0.15</span>))) <span class="sc">+</span>   <span class="co"># room for the labels</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span></code></pre></div>
+<p><strong>Color should carry meaning.</strong> - A different color for
+every bar (a rainbow), plus a legend that repeats the axis, encodes
+nothing. Use one color, and save color for a highlight or a real
+grouping. - A diverging scale (two hues around a neutral midpoint) fits
+values that can be above or below zero. A sequential scale fits values
+that only go up. - Avoid red against green. Check your figure in
+grayscale.</p>
+<p><strong>A legend is worth keeping</strong> when there are too many
+groups to label directly or when the labels would collide with the
+data.</p>
+<hr />
+<h2 id="titles-themes-and-saving">12. Titles, themes, and saving</h2>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Systolic BP fell most at Clinic C&quot;</span>,    <span class="co"># say what the chart shows</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">subtitle =</span> <span class="st">&quot;Mean 6-month reduction, 95% CI&quot;</span>,</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">x =</span> <span class="cn">NULL</span>,                                         <span class="co"># drop an obvious axis title</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">y =</span> <span class="st">&quot;Mean systolic BP reduction (mmHg)&quot;</span>,         <span class="co"># name the measure and the unit</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">caption =</span> <span class="st">&quot;Simulated data&quot;</span>)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>))               <span class="co"># one theme for every plot</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="fu">theme</span>(<span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>())              <span class="co"># remove clutter</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;figure.png&quot;</span>, <span class="at">width =</span> <span class="dv">7</span>, <span class="at">height =</span> <span class="fl">4.5</span>, <span class="at">dpi =</span> <span class="dv">300</span>)   <span class="co"># saves the last plot</span></span></code></pre></div>
+<ul>
+<li><strong>A title says what the chart found, not what it
+contains.</strong> “Results by Clinic” tells the reader nothing.</li>
+<li><strong>Name the measure, the unit, and the direction.</strong> “SBP
+(mmHg)” does not say whether higher is better. Say “reduction,” and say
+that a positive value means improvement.</li>
+<li><strong>Set the size once</strong> (<code>ggsave()</code> or the
+<code>fig-width</code> / <code>fig-height</code> chunk options in
+Quarto), so the figure is the same every time.</li>
+</ul>
+<p>In a Quarto chunk:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 8</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 5</span></span></code></pre></div>
+<hr />
+<h2 id="checks-before-you-share-a-chart">13. Checks before you share a
+chart</h2>
+<ul>
+<li><strong>Is it the right statistic?</strong> Summing a value per
+group makes bigger groups look better. A comparison across groups of
+different sizes usually needs a mean or a rate.</li>
+<li><strong>Is the order useful?</strong> Alphabetical rarely is. Sort
+by the value you are comparing.</li>
+<li><strong>Is uncertainty shown?</strong> An interval, an n, or a
+ribbon tells the reader how much to trust a difference.</li>
+<li><strong>Is there an unintended message?</strong> A dual y axis can
+imply a relationship that comes from the scaling alone. Prefer two
+panels with a shared x axis.</li>
+<li><strong>Does the encoding fit the question?</strong> Magnitude: bars
+or dots. Trend: a line. Distribution: histogram, box, or violin.
+Relationship: points. Comparison across many groups: sorted dots, or
+facets.</li>
+<li><strong>Could the figure be read in two minutes by someone outside
+your field?</strong> If not, simplify the labels, drop the clutter, and
+say what the chart shows in the title.</li>
+<li><strong>Is a pattern causal?</strong> A relationship in a chart does
+not show cause. Patients who send more readings may differ from those
+who send fewer.</li>
+</ul>
+<hr />
+<h2 id="quick-lookup">Quick lookup</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>I want to…</th>
+<th>Syntax</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bars from values I already have</td>
+<td><code>geom_col()</code></td>
+</tr>
+<tr>
+<td>Bars from a count of rows</td>
+<td><code>geom_bar()</code></td>
+</tr>
+<tr>
+<td>Histogram with set bins</td>
+<td><code>geom_histogram(binwidth = , boundary = )</code></td>
+</tr>
+<tr>
+<td>Smooth curve over a histogram</td>
+<td><code>after_stat(density)</code> + <code>geom_density()</code></td>
+</tr>
+<tr>
+<td>Keep a density from spilling past a minimum</td>
+<td><code>geom_density(bounds = c(min, Inf))</code></td>
+</tr>
+<tr>
+<td>Compare distributions across groups</td>
+<td><code>geom_boxplot()</code> / <code>geom_violin()</code></td>
+</tr>
+<tr>
+<td>Show every point on a boxplot</td>
+<td><code>outlier.shape = NA</code> + <code>geom_jitter()</code></td>
+</tr>
+<tr>
+<td>Sort categories by a value</td>
+<td><code>reorder(x, value, FUN = median)</code></td>
+</tr>
+<tr>
+<td>One panel per group</td>
+<td><code>facet_wrap(~ x)</code> / <code>facet_grid(r ~ c)</code></td>
+</tr>
+<tr>
+<td>Trend line</td>
+<td><code>geom_smooth(method = "lm")</code></td>
+</tr>
+<tr>
+<td>Log axis with chosen ticks</td>
+<td><code>scale_x_log10(breaks = c(...))</code></td>
+</tr>
+<tr>
+<td>Point with an interval</td>
+<td><code>geom_pointrange(aes(xmin, xmax))</code></td>
+</tr>
+<tr>
+<td>Label marks with values</td>
+<td><code>geom_text(aes(label = ...), nudge_y = )</code></td>
+</tr>
+<tr>
+<td>Remove the gap under bars</td>
+<td><code>expansion(mult = c(0, 0.05))</code></td>
+</tr>
+<tr>
+<td>Zoom without dropping data</td>
+<td><code>coord_cartesian(ylim = c(a, b))</code></td>
+</tr>
+<tr>
+<td>Start an axis at 0</td>
+<td><code>scale_y_continuous(limits = c(0, NA))</code></td>
+</tr>
+<tr>
+<td>Choose date ticks and format</td>
+<td><code>scale_x_date(date_breaks = , date_labels = )</code></td>
+</tr>
+<tr>
+<td>Vertical event line plus label</td>
+<td><code>geom_vline()</code> + <code>annotate("text")</code></td>
+</tr>
+<tr>
+<td>Shade a time window</td>
+<td><code>annotate("rect", ymin = -Inf, ymax = Inf)</code></td>
+</tr>
+<tr>
+<td>Shaded uncertainty band</td>
+<td><code>geom_ribbon(aes(ymin, ymax), alpha = 0.2)</code></td>
+</tr>
+<tr>
+<td>Label lines instead of a legend</td>
+<td><code>geom_text()</code> +
+<code>theme(legend.position = "none")</code></td>
+</tr>
+<tr>
+<td>Color-blind safe palette</td>
+<td><code>scale_color_viridis_d()</code></td>
+</tr>
+<tr>
+<td>Same theme everywhere</td>
+<td><code>theme_set(theme_minimal())</code></td>
+</tr>
+<tr>
+<td>Save a figure</td>
+<td><code>ggsave("file.png", width, height, dpi)</code></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

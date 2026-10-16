@@ -7,7 +7,7 @@ income_by_age %>% filter(race == "all") %>%
                        name = "median income (USD)",
                        breaks = c(0, 20000, 40000, 60000),
                        labels = c("$0", "$20,000", "$40,000", "$60,000")) +
-    xlab("age (years)") +
+    scale_x_discrete(name = "age (years)", guide = guide_axis(n.dodge = 2)) +
     coord_cartesian(clip = "off") +
     theme_dviz_hgrid() +
     theme(

@@ -9,7 +9,7 @@ fig_stacked_histogram <- function(font_size = 12) {
 gender_counts$gender <- factor(gender_counts$gender, levels = c("female", "male"))
 
 p_hist_overlapped <- ggplot(gender_counts, aes(x = age, y = count, fill = gender)) + 
-  geom_col(position = "identity", alpha = 0.7) +
+  geom_col(position = "identity", alpha = 0.7, width = 2.2) +
   scale_x_continuous(name = "age (years)", limits = c(0, 75), expand = c(0, 0)) +
   scale_y_continuous(limits = c(0, 56), expand = c(0, 0), name = "count") +
   scale_fill_manual(

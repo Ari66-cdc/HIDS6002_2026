@@ -1,0 +1,164 @@
+---
+title: "ggplot2 in 15 Minutes: Time Series and Trends"
+subtitle: "In-class exercise: engagement over the first year of a remote monitoring program"
+format:
+  html:
+    embed-resources: true
+    toc: true
+execute:
+  warning: false
+  message: false
+---
+
+## About the data
+
+| Variable | Table | Meaning |
+|------------------------|------------------------|------------------------|
+| `week_start` | both | Monday of the week (a date) |
+| `pct_submitting` | both | \% of enrolled patients who submitted at least one reading that week |
+| `trail_5wk` | `weekly_program` | 5-week **trailing** average of `pct_submitting` (this week and the 4 before it) |
+| `center_5wk` | `weekly_program` | 5-week **centered** average (2 weeks before, 2 after) |
+| `device_type` | `weekly_device` | Bluetooth or Cellular cuff |
+| `mean_sbp` | `weekly_device` | Mean systolic BP of readings submitted that week (mmHg) |
+| `end_label` | `weekly_device` | The device name on the last week of each line, and missing otherwise |
+
+Three constants mark events in the program's year: `protocol_start` (June 2, when nurses began a medication titration protocol), `shortage_start` and `shortage_end` (August 4 to September 14, a supply shortage of cellular cuffs).
+
+## New formatting skills in this exercise
+
+| Skill | Function | Step |
+|------------------------|------------------------|------------------------|
+| Change ticks on a date axis | `scale_x_date(date_breaks, date_labels)` | 3 |
+| Vertical line with a label (revisited) | `geom_vline()` + `annotate("text", ...)` | 4 |
+| Shaded time window | `annotate("rect", ...)` | 5 |
+| Direct labels in place of a legend | `geom_text()` + `expansion()` | 6 |
+
+## Step 0: Setup
+
+Open the project folder in RStudio or VS Code first, so that `rpm-setup.R` and the `data` folder are in your working directory. Then run this chunk once.
+
+```{r}
+source("rpm-setup.R")
+head(weekly_program)
+```
+
+## Step 1: A line plot
+
+One point per week, joined by a line. The line says "these are ordered in time", which a scatter plot wouldn't.
+
+```{r}
+ggplot(weekly_program, aes(x = week_start, y = pct_submitting)) +
+  geom_line() +
+  scale_y_continuous(limits=c(0,80)) +
+  labs(x = NULL, y = "Patients submitting a reading (%)")
+```
+
+**Your turn:**
+
+1.  Add a point for each week, so you can see the individual observations. (Hint: a second geom can use the same aesthetics.)
+2.  Make the y axis start at 0. (Hint: `scale_y_continuous()` has a `limits` argument, and `NA` means "keep the default for this end".) Does the story change?
+3.  There are a few sharp one-week dips. Roughly when do they happen, and what might cause them?
+
+## Step 2: Smoothing
+
+Weekly values are noisy. A moving average smooths them. Here the raw weekly line is pale grey and the 5-week **centered** average is drawn on top.
+
+```{r}
+ggplot(weekly_program, aes(x = week_start)) +
+  geom_line(aes(y = pct_submitting), color = "grey70") +
+  geom_line(aes(y = center_5wk), color = "#0072B2", linewidth = 1.2) +
+  labs(x = NULL, y = "Patients submitting a reading (%)")
+```
+
+**Your turn:**
+
+1.  Swap `center_5wk` for `trail_5wk`. Which curve lags behind the raw data? Which one would you put on a live dashboard, where you can't see the future, and which in a report written after the year ends?
+2.  Look at the two ends of each smoothed line. Why does the centered average have gaps?
+3.  Does the smoothed line still show the holiday dips? What does that tell you about the cost of smoothing?
+
+## Step 3: Change the ticks
+
+By default ggplot picks its own date ticks. You can choose both how often they appear and how they are written, using `strftime` codes such as `%b` (month abbreviation), `%d` (day), and `%Y` (year).
+
+```{r}
+ggplot(weekly_program, aes(x = week_start, y = center_5wk)) +
+  geom_line(color = "#0072B2", linewidth = 1.2) +
+  scale_x_date(date_breaks = "2 months", date_labels = "%b") +
+  labs(x = NULL, y = "Patients submitting a reading (%)")
+```
+
+**Your turn:**
+
+1.  Change the ticks to every month, then to every 3 months. Which is easiest to read?
+2.  Show the year in the label too, like `Jan 2025`. Is it needed on every tick? (Hint: add `%Y` to `date_labels`.)
+3.  The grid has extra lines between ticks. Remove them. (Hint: look for the `minor_breaks` argument in the same function; `NULL` means none.)
+
+## Step 4: Mark an event with a vertical line
+
+Time series are easier to interpret when events are marked on them. On a date axis, `geom_vline()` takes a date for `xintercept`. We already have `protocol_start` defined for you.
+
+```{r}
+ggplot(weekly_program, aes(x = week_start, y = center_5wk)) +
+  geom_line(color = "#0072B2", linewidth = 1.2) +
+  geom_vline(xintercept = protocol_start, linetype = "dashed") +
+  annotate("text", x = protocol_start, y = Inf, label = "Nurse titration\nprotocol starts",
+           hjust = 1.05, vjust = 1.5, size = 3.5) +
+  scale_x_date(date_breaks = "2 months", date_labels = "%b") +
+  labs(x = NULL, y = "Patients submitting a reading (%)")
+```
+
+**Your turn:**
+
+1.  Move the label to the right side of the line. (Hint: which sign does `hjust` need?)
+2.  Did engagement change after the protocol began? 
+3.  Mark the holiday dips too. The week containing July 4 starts Monday, June 30, and the week of Thanksgiving starts November 24. (Hint: `as.Date("2025-06-30")`, and `xintercept` accepts a vector of dates.)
+
+## Step 5: Compare two groups and shade a window
+
+Now one line per device type. The grey band marks the supply shortage that affected cellular cuffs. `annotate("rect", ...)` draws a rectangle in data coordinates, and `-Inf` and `Inf` stretch it to the edges of the panel.
+
+```{r}
+ggplot(weekly_device, aes(x = week_start, y = pct_submitting, color = device_type)) +
+  geom_line(linewidth = 1) +
+  annotate("rect", xmin = shortage_start, xmax = shortage_end,
+           ymin = -Inf, ymax = Inf, alpha = 0.2) +
+  scale_x_date(date_breaks = "2 months", date_labels = "%b") +
+  scale_color_viridis_d(end = 0.7) +
+  labs(x = NULL, y = "Patients submitting a reading (%)", color = NULL)
+```
+
+**Your turn:**
+
+1.  What happens to each device group during the shaded window, and what happens after?
+2.  The shaded band is drawn *over* the lines. Make it sit behind them. (Hint: ggplot draws layers in the order you add them.)
+3.  Add a short text label for the band, like "Cellular cuff shortage". (Hint: `annotate("text", ...)` with an `x` in the middle of the window. Use ?annotate for guidance.)
+
+## Step 6: Label lines directly
+
+A legend makes readers look back and forth. Labeling the lines directly puts the name where the eye already is. The `weekly_device` table has a column called `end_label` that holds the device name on the last week only, so `geom_text()` draws one label per line.
+
+```{r}
+ggplot(weekly_device, aes(x = week_start, y = pct_submitting, color = device_type)) +
+  annotate("rect", xmin = shortage_start, xmax = shortage_end,
+           ymin = -Inf, ymax = Inf, alpha = 0.2) +
+  geom_line(linewidth = 1) +
+  geom_text(aes(label = end_label), hjust = -0.1, na.rm = TRUE) +
+  scale_x_date(date_breaks = "2 months", date_labels = "%b") +
+  scale_color_viridis_d(end = 0.7) +
+  labs(x = NULL, y = "Patients submitting a reading (%)") +
+  theme(legend.position = "none")
+```
+
+**Your turn:**
+
+1.  The labels run off the right edge of the plot. Add room to the right. (Hint: `scale_x_date()` has an `expand` argument that takes `expansion(mult = c(left, right))`.)
+2.  Make the labels the same color as their lines and a little bigger. (Hint: the color is already mapped, so look at `size` and `fontface`.)
+3.  Do you still need the legend? Is there any situation where you would keep it?
+
+## Wrap-up
+
+Answer in a sentence or two each:
+
+1.  When would you show the raw weekly line, and when the smoothed line? What does each hide?
+2.  Which ticks did you finally choose, and why?
+3.  A manager asks, "Did the cellular shortage hurt our blood pressure outcomes?" What would you need to plot next?

@@ -7,6 +7,7 @@ library(dviz.supp)
 library(sf)
 library(gapminder)
 library(ggridges) # for geom_density_line()
+library(ggforce) # geom_arc_bar() for pie charts
 library(tidyr) 
 
 # Add more as you borrow chapters, e.g.:

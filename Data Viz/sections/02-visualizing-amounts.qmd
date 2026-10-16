@@ -1,4 +1,4 @@
-# Visualizing Amounts
+# Visualizing Amounts and Proportions
 
 ## Bar plots
 
@@ -75,9 +75,9 @@ place_fig("fig-bar-grouped", fig_bar_grouped(),
 ```{r}
 #| output: asis
 place_fig("fig-dot", fig_dot(),
-          w = 4.5, h = 3.6, x = 9, y = 1.4, width = 5)
+          w = 4.5, h = 7, x = 8, y = 1.5, width = 3.9)
 place_fig("fig-bar-long", fig_bar_long(),
-          w = 4.5, h = 3.6, x = 9, y = 5, width = 5)
+          w = 4.5, h = 7, x = 12, y = 1.5, width = 3.9)
 ```
 
 ## Heatmaps
@@ -99,4 +99,88 @@ place_fig("fig-bar-long", fig_bar_long(),
 #| output: asis
 place_fig("fig-heatmap", fig_heatmap(),
           w = 4.5, h = 3.6, x = 8, y = 2, width = 7.5)
+```
+
+## Pie charts
+
+:::: {.columns}
+::: {.column width="50%"}
+- Slice area = share of the whole
+- Most useful with few categories and large percentages
+- Works when the key message is a simple part-to-whole or majority comparison
+- Example: SPD + FDP held a small majority over CDU/CSU
+
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("fig-bundestag-pie", fig_bundestag_pie(),
+          w = 4.5, h = 3.6, x = 8, y = 2, width = 7.5)
+```
+
+## When pie charts fail
+
+:::: {.columns}
+::: {.column width="50%"}
+- Five companies with similar shares (~20% each) over three years
+- Pies: hard to compare shares within or across years
+- Stacked bars: trends for A and E are visible, but middle bars shift across years
+- Hard to compare anything but the bottom and top segments
+
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("fig-marketshare-pies", fig_marketshare_pies(),
+          w = 6.4, h = 2.3, x = 8.5, y = 1.2, width = 7.2)
+place_fig("fig-marketshare-stacked", fig_marketshare_stacked(),
+          w = 4.5, h = 3.6, x = 9.3, y = 4.3, width = 4.4)
+```
+
+## Side-by-side bars
+
+:::: {.columns}
+::: {.column width="50%"}
+- Best choice for comparing parts across groups
+- Shared baseline makes values easy to compare within a year
+- A and B grew; D and E shrank
+- Facet by year to see change over time
+
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("fig-marketshare-side-by-side", fig_marketshare_side_by_side(),
+          w = 4.5, h = 3.6, x = 8, y = 2, width = 7.5)
+```
+
+## Stacked bars with two categories
+
+:::: {.columns}
+::: {.column width="50%"}
+- Stacking works when there are only two parts per bar
+- Women in the Rwandan parliament over time
+- Dashed line at 50% shows when the majority flipped
+- Side-by-side bars make the same data harder to read: the proportion is no longer visible as a whole
+
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("fig-women-parliament", fig_women_parliament(),
+          w = 5.5, h = 3.0, x = 9.2, y = 1.6, width = 5.6)
+place_fig("fig-women-parliament-grouped", fig_women_parliament_grouped(),
+          w = 5.5, h = 3.0, x = 9.2, y = 5.0, width = 5.6)
 ```

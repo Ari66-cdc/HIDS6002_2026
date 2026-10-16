@@ -16,9 +16,8 @@ Content Adapted directly from [Fundamentals of Data Visualization](https://claus
 :::
 
 ::: {.column width="40%"}
-For each topic:
-
-- Brief lecture
-- Hands-on in ggplot2
+- For each topic:
+    - Brief lecture
+    - Hands-on in ggplot2
 :::
 ::::

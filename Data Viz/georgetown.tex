@@ -1,0 +1,56 @@
+% Georgetown palette
+\definecolor{GUBlue}{HTML}{041E42}
+\definecolor{GUGray}{HTML}{63666A}
+\definecolor{GULightGray}{HTML}{BBBCBC}
+\definecolor{GUPutty}{HTML}{D6D2C4}
+\definecolor{GUBlueTwo}{HTML}{003DA5}
+
+% Serif type, as Georgetown prefers (Beamer defaults to sans)
+\usefonttheme{serif}
+
+% Dashes instead of triangles
+\setbeamertemplate{itemize item}{\textendash}
+\setbeamertemplate{itemize subitem}{\textendash}
+\setbeamertemplate{itemize subsubitem}{\textendash}
+
+% Marker colors
+\setbeamercolor{itemize item}{fg=GUBlue}
+\setbeamercolor{itemize subitem}{fg=GUGray}
+\setbeamercolor{itemize subsubitem}{fg=GUGray}
+
+% Colors
+\setbeamercolor{structure}{fg=GUBlue}
+\setbeamercolor{title}{fg=GUBlue}
+\setbeamercolor{subtitle}{fg=GUGray}
+\setbeamercolor{frametitle}{fg=white, bg=GUBlue}
+\setbeamercolor{block title}{fg=white, bg=GUBlue}
+\setbeamercolor{block body}{fg=black, bg=GUPutty!40}
+\setbeamercolor{item}{fg=GUBlueTwo}
+\setbeamercolor{footline}{fg=GUGray}
+
+\usepackage{etoolbox}
+
+% Tighter spacing when a bullet wraps (1 = normal; try 0.9 to 0.95)
+\linespread{0.9}
+
+\AtBeginDocument{%
+  \providecommand{\tightlist}{}%
+  \renewcommand{\tightlist}{\setlength{\itemsep}{0.2em}\setlength{\parskip}{0pt}}%
+}
+
+% Extra space before a sub-bullet list (adjust the number)
+\addtobeamertemplate{itemize/enumerate subbody begin}{\vspace{0.3em}}{}
+
+% Logo, bottom right of every slide
+\usepackage{tikz}
+\addtobeamertemplate{background}{}{%
+  \begin{tikzpicture}[remember picture, overlay]
+    \node[anchor=south west, inner sep=0.3cm]
+      at (current page.south west)
+      {\includegraphics[height=0.7cm]{gu-logo-clean.png}};
+  \end{tikzpicture}%
+}
+
+% Clean up
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]

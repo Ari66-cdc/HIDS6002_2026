@@ -1,0 +1,208 @@
+# Visualizing Distributions
+
+## Distributions
+
+- How a particular variable is distributed in a dataset
+- Statistics: Mean, median, mode, standard deviation, skewness, kurtosis
+- Visualizations: Histogram, density plot, boxplot, violin plot
+
+## Histograms
+
+:::: {.columns}
+::: {.column width="50%"}
+- Filled rectangles
+- Bin = Width of rectangle = range of values in that bin
+- Height of rectangle = number of observations or proportion of whole in that bin
+- Bin width matters for storytelling
+
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("fig-hist", fig_hist(),
+          w = 4.5, h = 3.6, x = 8, y = 2, width = 7.5)
+```
+
+## Density plots
+
+:::: {.columns}
+::: {.column width="50%"}
+- Curve estimated from the data - smooth version of a histogram
+- Area under the curve = 1
+- Height of curve = density of observations at that value
+- Density interpretation: Probability of observing a value in a given range = area under the curve for that range
+- Bandwidth matters for storytelling
+
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("fig-density", fig_density(),
+          w = 4.5, h = 3.6, x = 8, y = 2, width = 7.5)
+```
+
+## Density plots
+:::: {.columns}
+::: {.column width="50%"}
+- Pitfall: smooth across gaps in data or where there are no observations.
+
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("fig-density-bad", fig_density_bad(),
+          w = 4.5, h = 3.6, x = 8, y = 2, width = 7.5)
+```
+
+
+## Two distributions
+
+:::: {.columns}
+::: {.column width="50%"}
+- Avoid stacked histograms - hard to compare values
+- Bars start at different points
+- Use side-by-side histograms or density plots instead
+
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("fig-stacked-histogram", fig_stacked_histogram(),
+          w = 4.5, h = 3.6, x = 9.5, y = 1.5, width = 4.3)
+place_fig("fig_side-histogram", fig_side_histogram(),
+          w = 4.5, h = 3.6, x = 9.5, y = 5.0, width = 4.3)
+```
+
+## Two distributions
+
+:::: {.columns}
+::: {.column width="50%"}
+- Avoid stacked histograms - hard to compare values
+- Bars start at different points
+- Use side-by-side histograms or density plots instead
+
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("fig-two-density", fig_two_density(),
+          w = 4.5, h = 3.6, x = 8, y = 2, width = 7.5)
+```
+
+## More than two distributions
+
+:::: {.columns}
+::: {.column width="50%"}
+- Density plots extend nicely to more than one distribution
+- Use color to separate distributions
+- Transparency can help with overlapping distributions
+
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("fig-four-density", fig_four_density(),
+          w = 4.5, h = 3.6, x = 8, y = 2, width = 7.5)
+```
+
+## Quantile--quantile (Q-Q) plots
+
+:::: {.columns}
+::: {.column width="50%"}
+- Compare observed data to a reference distribution (usually normal)
+- Rank each point, then plot its observed value vs. the value expected at that rank
+- Diagonal line = *x* equals *y*
+- Points on the line: data follow the reference distribution
+
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("fig-student-grades-qq", fig_student_grades_qq(),
+          w = 4, h = 3.9, x = 9, y = 1.4, width = 6)
+```
+
+
+## Boxplots
+
+:::: {.columns}
+::: {.column width="50%"}
+- Divide the data into quartiles
+- Line = median; box = middle 50% of the data (interquartile range)
+- Whiskers extend to the most extreme points within the fences (1.5 × box height)
+- Points beyond the fences = outliers
+
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("fig-boxplot-schematic", fig_boxplot_schematic(),
+          w = 7.1, h = 4.5, x = 7, y = 1.8, width = 8.5)
+```
+
+## Many distributions at once
+
+:::: {.columns}
+::: {.column width="50%"}
+- Boxplots: compact, easy to compare; show skew (e.g., December)
+- Violin plots: mirrored density; reveal bimodality a boxplot hides (e.g., November)
+- Violins inherit the shortcomings of density estimates
+
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("fig-lincoln-temp-boxplots", fig_lincoln_temp_boxplots(),
+          w = 4.5, h = 3.6, x = 9.5, y = 1.6, width = 4.2)
+place_fig("fig-lincoln-temp-violins", fig_lincoln_temp_violins(),
+          w = 4.5, h = 3.6, x = 9.5, y = 5.0, width = 4.2)
+```
+
+## Plotting all the points
+
+:::: {.columns}
+::: {.column width="50%"}
+- Strip chart: show every observation as a dot
+- Overplotting hides which temperatures are most common
+- Jittering spreads points along the *x* axis to show density
+- Good option when the data are too sparse for violins
+
+:::
+::: {.column width="50%"}
+:::
+::::
+
+```{r}
+#| output: asis
+place_fig("fig-lincoln-temp-all-points", fig_lincoln_temp_all_points(),
+          w = 4.5, h = 3.6, x = 9.5, y = 1.6, width = 4.2)
+place_fig("fig-lincoln-temp-jittered", fig_lincoln_temp_jittered(),
+          w = 4.5, h = 3.6, x = 9.5, y = 5.0, width = 4.2)
+```

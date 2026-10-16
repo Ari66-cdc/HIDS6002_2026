@@ -1,0 +1,172 @@
+---
+title: "ggplot2 in 15 Minutes: Amounts and Proportions"
+subtitle: "In-class exercise: a remote blood pressure monitoring program"
+format:
+  html:
+    embed-resources: true
+    toc: true
+execute:
+  warning: false
+  message: false
+---
+
+## How this works
+
+Each step below has **working code** and a short **Your turn** task. Edit the code chunk, run it (click the green arrow or press Ctrl+Shift+Enter), and look at the plot. Hints are collapsed; open them only if you're stuck.
+
+## About the data
+
+A health system runs a 12-month **remote blood pressure monitoring program** for patients with hypertension. Patients take readings at home with a cuff that sends results to their care team, and a nurse or pharmacist adjusts medications. There are 400 patients at 8 clinics.
+
+**All patients, clinics, and values are simulated.** The tables are already summarized, so you can focus on the plots.
+
+| Table | One row per | Main variables |
+|------------------------|------------------------|------------------------|
+| `patients` | patient | `baseline_sbp` and `sbp_6mo` (systolic BP in mmHg at enrollment and at 6 months), `age_group`, `device_type` (Bluetooth or Cellular), `total_readings` (readings submitted in the first 26 weeks) |
+| `clinic_summary` | clinic | `n_patients`, `pct_controlled` (% with systolic under 140 at 6 months), `mean_readings_wk` |
+| `clinic_device` | clinic and device type | `n_patients`, `pct_controlled` |
+| `clinic_month` | clinic and month | `mean_readings_wk` (average readings per patient per week) |
+| `quarter_control` | quarter and BP status | `pct` (% of patients controlled or not controlled) |
+
+## Step 0: Setup (1 min)
+
+Open the project folder in VS Code first, so that `rpm-setup.R` and the `data` folder are in your working directory. Then run this chunk once. If R says the `ggplot2` package isn't found, run `install.packages("ggplot2")` in the console first.
+
+```{r}
+source("rpm-setup.R")
+head(patients)
+```
+
+## Step 1: Position (2 min)
+
+Every ggplot has three parts: **data**, **aesthetics** (`aes()`, which maps variables to visual properties), and a **geom** (the shape drawn). Here, baseline systolic BP maps to the x position and 6-month systolic BP to the y position. The dashed line marks "no change", so patients below it improved.
+
+```{r}
+ggplot(patients, aes(x = baseline_sbp, y = sbp_6mo)) +
+  geom_point(alpha = 0.4) +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed")
+```
+
+**Your turn:** First try changing this to geom_line. Is it interpretable? Change back to geom_point. Add axis labels with units by adding `+ labs(x = "...", y = "...")` after `geom_abline()`. Then try `geom_point(alpha = 0.4)`. What problem does transparency solve?
+
+## Step 2: Color, shape, and size (2 min)
+
+Position is not the only aesthetic. Here, `color` shows a *qualitative* variable: the device each patient uses.
+
+```{r}
+ggplot(patients, aes(x = baseline_sbp, y = sbp_6mo, color = age_group)) +
+  geom_point(size = 2, alpha = 0.7)
+```
+
+**Your turn:** Try each of these, one at a time, and notice which ones work well:
+
+1.  Add `+ scale_color_viridis_d()` to switch to a colorblind-safe palette.
+2.  Replace `color = device_type` with `shape = device_type`.
+3.  Replace `color = device_type` with `color = age_group` (three ordered groups). How does ggplot treat an ordered variable?
+4.  Replace `color = device_type` with `size = total_readings` (a *continuous* variable). Is size a good choice here?
+
+## Step 3: Bar plot (2 min)
+
+A bar plot shows an amount for each category. Here, the number of patients enrolled at each clinic.
+
+```{r}
+ggplot(clinic_summary, aes(x = clinic, y = n_patients)) +
+  geom_col()
+```
+
+**Your turn:**
+
+1.  Flip the bars to horizontal by putting `clinic` on the y axis and `n_patients` on the x axis.
+2.  The bars are in alphabetical order, which tells the reader nothing. Use `reorder(clinic, n_patients)` to sort them by size.
+
+## Step 4: Grouped bars (2 min)
+
+Now we add a second categorical variable, device type, and use color (`fill`) to separate the bars within each clinic.
+
+```{r}
+ggplot(clinic_device, aes(x = clinic, y = pct_controlled, fill = device_type)) +
+  geom_col(position = "dodge") +
+  scale_fill_viridis_d()
+```
+
+**Your turn:** Find the clinic where Bluetooth does better than Cellular. Then swap the groups by changing `x = clinic, fill = device_type` to `x = device_type, fill = clinic`. The bars you want to compare should sit next to each other. Which version answers "how do devices differ within a clinic?" and which answers "how do clinics differ within a device type?"
+
+## Step 5: Heatmap (2 min)
+
+With many groups, grouped bars get crowded. A heatmap maps the value to color instead of position. Here, engagement (readings per patient per week) for every clinic and month.
+
+```{r}
+ggplot(clinic_month, aes(x = month, y = clinic, fill = mean_readings_wk)) +
+  geom_tile(color = "white") +
+  scale_fill_viridis_c(option = "magma") +
+  labs(x = NULL, y = NULL, fill = "Readings\nper week")
+```
+
+**Your turn:** Order the clinics by engagement by changing `y = clinic` to `y = reorder(clinic, mean_readings_wk)`. Which clinic is consistently lowest? Is there a month where the whole grid changes? What might have caused it?
+
+## Step 6: Proportions (2 min)
+
+When a whole splits into only two parts, a stacked bar works well. Here, the share of patients with controlled and uncontrolled BP in each quarter. The dashed line marks 50%: the quarter where most patients are controlled.
+
+```{r}
+ggplot(quarter_control, aes(x = quarter, y = pct, fill = status)) +
+  geom_col(position = position_stack(reverse = TRUE)) +
+  geom_hline(yintercept = 50, linetype = "dashed") +
+  scale_fill_viridis_d(end = 0.85) +
+  labs(x = NULL, y = "Share of patients (%)", fill = NULL)
+```
+
+The `position_stack(reverse = TRUE)` puts "Controlled" on the bottom, so you can read its height straight from the axis.
+
+**Your turn:** Change `position = position_stack(reverse = TRUE)` to `position = "dodge"` to put the bars side by side. Which version makes it easier to see whether the controlled share crosses 50%? Which makes it easier to compare the controlled share across quarters?
+
+## Wrap-up (1 min)
+
+Answer in a sentence or two each:
+
+1.  You need to show a clinic manager (a) which clinics enroll the most patients, (b) how control rates compare across clinics, and (c) how engagement changed month by month. Which plot would you use for each?
+2.  Cellular looks better than Bluetooth in most clinics (Step 5). What else would you want to know before concluding that the device itself is the reason?
+
+## Stretch (if you finish early)
+
+Pie charts can show a part-to-whole split, but they get hard to read when you compare several of them. Draw one pie per quarter and see how well you can compare them to the stacked bars in Step 7.
+
+```{r}
+ggplot(quarter_control, aes(x = "", y = pct, fill = status)) +
+  geom_col(width = 1) +
+  coord_polar(theta = "y") +
+  facet_wrap(~ quarter) +
+  scale_fill_viridis_d(end = 0.85) +
+  theme_void() +
+  labs(fill = NULL)
+```
+
+As an alternative, you could plot proportions as filled squares:
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+
+# 1. Expand pct into 10 discrete units (1 unit = 10%)
+quarter_dots <- quarter_control |>
+  mutate(n_units = round(pct / 10)) |>
+  uncount(n_units) |>
+  group_by(quarter) |>
+  mutate(unit_id = row_number() * 10) |> 
+  ungroup()
+
+# 2. Plot with shape = 21 (circles) or shape = 22 (boxes)
+ggplot(quarter_dots, aes(x = quarter, y = unit_id, fill = status)) +
+  geom_point(
+    shape = 22,             # Use 22 for boxes, 21 for circles
+    size = 12,               # Adjust size to fit your spacing
+    stroke = 0.8,           # Border thickness
+    color = "black"         # Border color
+  ) +
+  geom_hline(yintercept = 50, linetype = "dashed", color = "gray40") +
+  scale_y_continuous(limits = c(5, 105), breaks = seq(0, 100, 20)) +
+  scale_fill_viridis_d(end = 0.85) +
+  labs(x = NULL, y = "Share of patients (%)", fill = NULL) +
+  theme_minimal()
+```

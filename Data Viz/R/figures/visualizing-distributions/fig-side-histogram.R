@@ -9,7 +9,7 @@ data.frame(
 gender_counts$gender <- factor(gender_counts$gender, levels = c("female", "male"))
 
     ggplot(gender_counts, aes(x = age, y = ifelse(gender == "male",-1, 1)*count, fill = gender)) + 
-        geom_col() +
+        geom_col(width = 2.2) +
         scale_x_continuous(name = "age (years)", limits = c(0, 75), expand = c(0, 0)) +
         scale_y_continuous(name = "count", breaks = 20*(-2:1), labels = c("40", "20", "0", "20")) +
         scale_fill_manual(values = c("#D55E00", "#0072B2"), guide = "none") +

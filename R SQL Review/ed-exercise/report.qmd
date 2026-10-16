@@ -1,0 +1,73 @@
+---
+title: "ED use and cost: brief for health system leadership"
+author: "Team name and members"
+date: today
+format:
+  html:
+    embed-resources: true
+    toc: false
+execute:
+  echo: false
+  warning: false
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(dplyr)
+library(ggplot2)
+
+source("R/helpers.R")
+source("R/prep.R")
+source("R/plots.R")
+
+# Validate right after reading, so bad data stops here and not in a figure.
+visits <- readr::read_csv("data/ed_visits.csv", show_col_types = FALSE) |>
+  validate_ed_visits()
+patients <- readr::read_csv("data/patients.csv", show_col_types = FALSE)
+
+monthly <- monthly_counts(visits, data_end = study_window[2])
+payers <- payer_summary(visits)
+curve <- lorenz_curve(patient_costs(visits, patients)$ed_cost)
+```
+
+## Summary
+
+*Two or three sentences for leadership: how are ED visits trending, which payers drive visits and pay least, and how concentrated is cost?*
+
+## 1. Trend in ED visits by month
+
+```{r}
+#| label: fig-trend
+#| eval: false
+# TODO: write plot_trend() in R/plots.R, then remove eval: false.
+plot_trend(monthly)
+```
+
+**Takeaway:** *one sentence.*
+
+## 2. ED visits by payer
+
+```{r}
+#| label: fig-payer
+#| eval: false
+# TODO: write plot_payer() in R/plots.R, then remove eval: false.
+plot_payer(payers)
+```
+
+**Takeaway:** *one sentence.*
+
+## 3. Concentration of ED cost
+
+```{r}
+#| label: fig-lorenz
+#| eval: false
+# TODO: write plot_lorenz() in R/plots.R, then remove eval: false.
+plot_lorenz(curve)
+```
+
+**Takeaway:** *one sentence. Gini: use `gini()`.*
+
+## Data and methods
+
+*Source and date range, what was excluded (urgent care, the partial last month), how each patient-date was counted, and who is in the population. Say whether a few huge costs drive the Lorenz curve.*

@@ -1,0 +1,137 @@
+---
+title: "ggplot2: Associations"
+subtitle: "In-class exercise: does engagement go with blood pressure improvement?"
+format:
+  html:
+    embed-resources: true
+    toc: true
+execute:
+  warning: false
+  message: false
+---
+
+
+## About the data
+
+| Variable | Table | Meaning |
+|---|---|---|
+| `total_readings` | `patients` | Home readings submitted in the first 26 weeks |
+| `sbp_reduction` | `patients` | Baseline minus 6-month systolic BP (mmHg). **Positive means improvement.** |
+| `baseline_sbp` | `patients` | Systolic BP at enrollment (mmHg) |
+| `device_type`, `age_group` | `patients` | Bluetooth or Cellular cuff; age in three ordered groups |
+| `mean_reduction`, `ci_low`, `ci_high` | `clinic_effect` | Each clinic's average reduction with a 95% confidence interval |
+| `mean_readings_wk`, `pct_controlled` | `clinic_summary` | Each clinic's average readings per patient per week, and % with systolic under 140 at 6 months |
+
+## New formatting skills in this exercise
+
+| Skill | Function | Step |
+|---|---|---|
+| Change a scale (log axis, custom ticks) | `scale_x_log10(breaks = ...)` | 2 |
+| Data labels | `geom_text()` | 4, 5 |
+| Facet (revisited) | `facet_wrap()`, `facet_grid()` | 3 |
+
+## Step 0: Setup
+
+Open the exercises project folder in RStudio or VS Code first, so that `rpm-setup.R` and the `data` folder are in your working directory.
+
+```{r}
+source("rpm-setup.R")
+head(patients)
+```
+
+## Step 1: Scatter plot and a trend line
+
+Each dot is a patient. The dashed line is "no change", so patients above it improved. Let's look at the relationship between each patient's engagement (readings submitted) and improvement (systolic BP reduction).
+
+```{r}
+ggplot(patients, aes(x = total_readings, y = sbp_reduction)) +
+  geom_point(alpha = 0.5) +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  labs(x = "Readings submitted in first 26 weeks",
+       y = "Systolic BP reduction (mmHg)")
+```
+
+**Your turn:**
+
+1. Add a trend line with `geom_smooth()`. Does the relationship look like a straight line? (Hint: compare the default with `method = "lm"`.)
+2. Describe the pattern at the far right of the plot. Do 200 readings help much more than 100?
+
+## Step 2: Change the scale
+
+Most patients submit between 50 and 150 readings, but a few submit very few and a few submit a lot. On a linear axis, the crowded middle gets squeezed. A log axis spreads out the low values and compresses the high ones, so each doubling takes the same distance.
+
+```{r}
+ggplot(patients, aes(x = total_readings, y = sbp_reduction)) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = "lm", se = FALSE) +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  scale_x_log10() +
+  labs(x = "Readings submitted in first 26 weeks (log scale)",
+       y = "Systolic BP reduction (mmHg)")
+```
+
+**Your turn:**
+
+1. Compare the straight line here with your answer to Step 1. What happened to the curve?
+2. The default tick labels on a log axis are awkward. Choose your own, such as 10, 30, 100, and 300. (Hint: `scale_x_log10()` has a `breaks` argument that takes a vector of numbers.)
+3. What would a patient with zero readings look like on this plot?
+
+## Step 3: Facet to check subgroups
+
+An overall trend can hide differences between groups. Let's investigate the relationship between reading and blood pressure improvement for each device type.
+
+```{r}
+ggplot(patients, aes(x = total_readings, y = sbp_reduction)) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = "lm", se = FALSE) +
+  scale_x_log10(breaks = c(10, 30, 100, 300)) +
+  facet_wrap(~ device_type) +
+  labs(x = "Readings submitted (log scale)", y = "Systolic BP reduction (mmHg)")
+```
+
+**Your turn:**
+
+1. Do the two device types have the same slope? At the same number of readings, which group improves more, if either?
+2. Facet by `age_group` instead. Then try both at once. (Hint: `facet_grid(rows ~ cols)` uses a formula with one variable on each side of the `~`.) What does it cost you to split 400 patients into six panels?
+
+## Step 4: Intervals with data labels
+
+Let's shift the unit of analysis to clinics. Plot each clinic's SBP reduction using clinic_effect. A dot-and-whisker plot shows each clinic's mean reduction with its 95% confidence interval. The dashed line at 0 means "no change".
+
+```{r}
+ggplot(clinic_effect, aes(x = mean_reduction, y = reorder(clinic, mean_reduction))) +
+  geom_pointrange(aes(xmin = ci_low, xmax = ci_high)) +
+  geom_vline(xintercept = 0, linetype = "dashed") +
+  labs(x = "Mean systolic BP reduction at 6 months (mmHg, 95% CI)", y = NULL)
+```
+
+**Your turn:**
+
+1. Label each dot with its mean reduction, rounded to one decimal place. (Hint: add `geom_text()` with a `label` aesthetic wrapped in `round()`, and use `nudge_y` so the text sits above the dot instead of on it.)
+2. Which clinics have an interval that crosses 0? What can you say about those clinics?
+3. Challenge: make each label also show the clinic's sample size, like `5.1 (n=62)`. (Hint: `paste0()` can stitch text and numbers together.) Why does the sample size help you read the width of the intervals?
+
+## Step 5: Label points with names
+
+The clinic is still the unit of analysis. Let's plot the relationship between readings per week and blood pressure control. Each dot is a clinic. Do clinics with more engaged patients have more patients under control? The size of each dot shows the clinic's number of patients.
+
+```{r}
+ggplot(clinic_summary, aes(x = mean_readings_wk, y = pct_controlled)) +
+  geom_point(aes(size = n_patients), alpha = 0.6) +
+  labs(x = "Mean readings per patient per week",
+       y = "Patients with controlled BP at 6 months (%)",
+       size = "Patients")
+```
+
+**Your turn:**
+
+1. Label each dot with its clinic name. (Hint: another `geom_text()`, this time mapping `label` to `clinic`. If two names collide, look at `check_overlap` or `hjust`.)
+2. Make the y axis start at 0. (Hint: `scale_y_continuous()` has a `limits` argument, and `NA` means "keep the default for this end".) How does the strength of the association look now? When is it fair to start at 0 on a scatter plot, and when isn't it?
+
+## Wrap-up
+
+Answer in a sentence or two each:
+
+1. Why did the log axis help in Step 2? What did it tell you about the *shape* of the relationship?
+2. With 400 patients and 8 clinics, which plot would you show a clinic manager, and which would you show a researcher?
+3. Patients who submit more readings also do better. Does that mean sending reminders to increase readings would improve blood pressure? What else could explain the pattern? (Think about who chooses to engage.)
