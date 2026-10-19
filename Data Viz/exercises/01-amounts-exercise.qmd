@@ -43,7 +43,7 @@ Every ggplot has three parts: **data**, **aesthetics** (`aes()`, which maps vari
 
 ```{r}
 ggplot(patients, aes(x = baseline_sbp, y = sbp_6mo)) +
-  geom_point(alpha = 0.4) +
+  geom_point() +
   geom_abline(slope = 1, intercept = 0, linetype = "dashed")
 ```
 
@@ -54,8 +54,8 @@ ggplot(patients, aes(x = baseline_sbp, y = sbp_6mo)) +
 Position is not the only aesthetic. Here, `color` shows a *qualitative* variable: the device each patient uses.
 
 ```{r}
-ggplot(patients, aes(x = baseline_sbp, y = sbp_6mo, color = age_group)) +
-  geom_point(size = 2, alpha = 0.7)
+ggplot(patients, aes(x = baseline_sbp, y = sbp_6mo, color = device_type )) +
+  geom_point(size = 2, alpha = 0.7) 
 ```
 
 **Your turn:** Try each of these, one at a time, and notice which ones work well:
