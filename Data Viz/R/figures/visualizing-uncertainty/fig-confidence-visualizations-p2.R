@@ -27,7 +27,7 @@ ggplot(filter(contrasts_dunnettx, level == "95%"),
   ) +
   geom_point(size = 2.5, color = "#D55E00") +
   scale_x_continuous(
-    name = "difference in mean rating",
+    name = "difference in mean rating of chocolate\nby country of origin(95% CI)",
     limits = c(-.65, .47),
     expand = c(0, 0)
   ) +

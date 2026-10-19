@@ -28,7 +28,7 @@ A health system runs a 12-month **remote blood pressure monitoring program** for
 | `clinic_month` | clinic and month | `mean_readings_wk` (average readings per patient per week) |
 | `quarter_control` | quarter and BP status | `pct` (% of patients controlled or not controlled) |
 
-## Step 0: Setup (1 min)
+## Step 0: Setup
 
 Open the project folder in VS Code first, so that `rpm-setup.R` and the `data` folder are in your working directory. Then run this chunk once. If R says the `ggplot2` package isn't found, run `install.packages("ggplot2")` in the console first.
 
@@ -37,7 +37,7 @@ source("rpm-setup.R")
 head(patients)
 ```
 
-## Step 1: Position (2 min)
+## Step 1: Position
 
 Every ggplot has three parts: **data**, **aesthetics** (`aes()`, which maps variables to visual properties), and a **geom** (the shape drawn). Here, baseline systolic BP maps to the x position and 6-month systolic BP to the y position. The dashed line marks "no change", so patients below it improved.
 
@@ -49,7 +49,7 @@ ggplot(patients, aes(x = baseline_sbp, y = sbp_6mo)) +
 
 **Your turn:** First try changing this to geom_line. Is it interpretable? Change back to geom_point. Add axis labels with units by adding `+ labs(x = "...", y = "...")` after `geom_abline()`. Then try `geom_point(alpha = 0.4)`. What problem does transparency solve?
 
-## Step 2: Color, shape, and size (2 min)
+## Step 2: Color, shape, and size
 
 Position is not the only aesthetic. Here, `color` shows a *qualitative* variable: the device each patient uses.
 
@@ -65,7 +65,7 @@ ggplot(patients, aes(x = baseline_sbp, y = sbp_6mo, color = age_group)) +
 3.  Replace `color = device_type` with `color = age_group` (three ordered groups). How does ggplot treat an ordered variable?
 4.  Replace `color = device_type` with `size = total_readings` (a *continuous* variable). Is size a good choice here?
 
-## Step 3: Bar plot (2 min)
+## Step 3: Bar plot
 
 A bar plot shows an amount for each category. Here, the number of patients enrolled at each clinic.
 
@@ -79,7 +79,7 @@ ggplot(clinic_summary, aes(x = clinic, y = n_patients)) +
 1.  Flip the bars to horizontal by putting `clinic` on the y axis and `n_patients` on the x axis.
 2.  The bars are in alphabetical order, which tells the reader nothing. Use `reorder(clinic, n_patients)` to sort them by size.
 
-## Step 4: Grouped bars (2 min)
+## Step 4: Grouped bars
 
 Now we add a second categorical variable, device type, and use color (`fill`) to separate the bars within each clinic.
 
@@ -91,7 +91,7 @@ ggplot(clinic_device, aes(x = clinic, y = pct_controlled, fill = device_type)) +
 
 **Your turn:** Find the clinic where Bluetooth does better than Cellular. Then swap the groups by changing `x = clinic, fill = device_type` to `x = device_type, fill = clinic`. The bars you want to compare should sit next to each other. Which version answers "how do devices differ within a clinic?" and which answers "how do clinics differ within a device type?"
 
-## Step 5: Heatmap (2 min)
+## Step 5: Heatmap
 
 With many groups, grouped bars get crowded. A heatmap maps the value to color instead of position. Here, engagement (readings per patient per week) for every clinic and month.
 
@@ -104,7 +104,7 @@ ggplot(clinic_month, aes(x = month, y = clinic, fill = mean_readings_wk)) +
 
 **Your turn:** Order the clinics by engagement by changing `y = clinic` to `y = reorder(clinic, mean_readings_wk)`. Which clinic is consistently lowest? Is there a month where the whole grid changes? What might have caused it?
 
-## Step 6: Proportions (2 min)
+## Step 6: Proportions
 
 When a whole splits into only two parts, a stacked bar works well. Here, the share of patients with controlled and uncontrolled BP in each quarter. The dashed line marks 50%: the quarter where most patients are controlled.
 
@@ -120,7 +120,7 @@ The `position_stack(reverse = TRUE)` puts "Controlled" on the bottom, so you can
 
 **Your turn:** Change `position = position_stack(reverse = TRUE)` to `position = "dodge"` to put the bars side by side. Which version makes it easier to see whether the controlled share crosses 50%? Which makes it easier to compare the controlled share across quarters?
 
-## Wrap-up (1 min)
+## Wrap-up
 
 Answer in a sentence or two each:
 

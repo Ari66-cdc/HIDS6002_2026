@@ -29,7 +29,7 @@ Two constants are already defined for you: `sbp_thresholds` (130 and 140 mmHg) a
 | Vertical line with a label | `geom_vline()` + `annotate("text", ...)` | 4 |
 | Small multiples (facet) | `facet_wrap()` | 6 |
 
-## Step 0: Setup (1 min)
+## Step 0: Setup
 
 Open the project folder in RStudio or VS Code first, so that `rpm-setup.R` and the `data` folder are in your working directory. Then run this chunk once.
 
@@ -38,7 +38,7 @@ source("rpm-setup.R")
 head(patients)
 ```
 
-## Step 1: Histogram and bin width (2 min)
+## Step 1: Histogram and bin width
 
 A histogram counts how many patients fall in each bin. Here the bins start at 130, the lowest possible value.
 
@@ -51,7 +51,7 @@ ggplot(patients, aes(x = baseline_sbp)) +
 **Your turn:** Change `binwidth` to 1, then to 15. Which version is too noisy? Which hides the shape?
 
 
-## Step 2: Density plot and bandwidth (2 min)
+## Step 2: Density plot and bandwidth
 
 A density plot is a smooth version of a histogram. Here we draw both. `after_stat(density)` puts the histogram on the same scale as the curve (total area = 1).
 
@@ -101,7 +101,7 @@ ggplot(patients, aes(x = baseline_sbp)) +
 **Your turn:**
 Add a second line for the median (`median(patients$baseline_sbp)`) in a different color, with its label on the *right* side of the line so the two labels don't collide. Hint: Use med <- median(patients$baseline_sbp) to define the median.
 
-## Step 5: Many distributions at once (3 min)
+## Step 5: Many distributions at once
 
 To compare distributions across clinics, a boxplot is compact and shows skew and outliers. Putting the clinic on the y axis keeps the labels readable.
 
@@ -117,7 +117,7 @@ ggplot(patients, aes(x = baseline_sbp, y = clinic)) +
 2. Replace `geom_boxplot(fill = "grey90")` with `geom_violin(fill = "grey90")`. What can you see in a violin that a boxplot hides?
 3.  Go back to the boxplot and add jittered points so every patient is a dot. Hint: use geom_jitter() and specify width and height.
 
-## Step 6: Facet into small multiples (2 min)
+## Step 6: Facet into small multiples
 
 Faceting gives each group its own panel with the same axes. Here: how long does it take patients to submit a first reading, one histogram per clinic? The dashed line marks the program's 7-day target.
 
@@ -137,7 +137,7 @@ ggplot(patients, aes(x = days_to_first_reading)) +
 2.  Change `ncol = 2` to `ncol = 4`. Which layout makes it easier to compare where each clinic sits left to right?
 3.  Add each clinic's median as its own line in its own panel (hint below). Hint: Use the clinic_summary table, which already has one median per clinic. Pass it to geom_vline() as its own data.
 
-## Wrap-up (1 min)
+## Wrap-up
 
 Answer in a sentence or two each:
 
