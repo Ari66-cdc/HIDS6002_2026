@@ -18,7 +18,7 @@ texas_race %>% st_sf() %>%
       label.position = "bottom",
       title.position = "top",
       ticks = FALSE,
-      barwidth = grid::unit(3.0, "in"),
+      barwidth = grid::unit(2.0, "in"),
       barheight = grid::unit(0.2, "in"))) +
   theme(
     legend.title.align = 0.5,

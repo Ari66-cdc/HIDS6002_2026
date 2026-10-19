@@ -13,16 +13,16 @@ texas_income %>% st_transform(crs = texas_crs) %>%
   theme_dviz_map() + 
   scale_fill_distiller(
     palette = "Blues", type = 'seq', na.value = "grey60", direction = 1,
-    name = "annual median income (USD)",
+    name = "annual median income\n(USD in Thousands)",
     limits = c(18000, 90000),
     breaks = 20000*c(1:4),
-    labels = c("$20,000", "$40,000", "$60,000", "$80,000"),
+    labels = c("$20", "$40", "$60", "$80"),
     guide = guide_colorbar(
       direction = "horizontal",
       label.position = "bottom",
       title.position = "top",
       ticks = FALSE,
-      barwidth = grid::unit(3.0, "in"),
+      barwidth = grid::unit(2.0, "in"),
       barheight = grid::unit(0.2, "in")
     )
   ) +

@@ -21,7 +21,7 @@ region_colors_dark <- darken(region_colors, 0.4)
 state_colors <- region_colors_dark[as.numeric(popgrowth_df$region[order(popgrowth_df$state)])]
 
 ggplot(popgrowth_df, aes(x = state, y = 100*popgrowth, fill = region)) + 
-  geom_col() + 
+  geom_col(width = 0.7) + 
   scale_y_continuous(
     limits = c(-.6, 37.5), expand = c(0, 0),
     labels = scales::percent_format(accuracy = 1, scale = 1),
@@ -33,7 +33,7 @@ ggplot(popgrowth_df, aes(x = state, y = 100*popgrowth, fill = region)) +
   theme(axis.title.y = element_blank(),
         axis.line.y = element_blank(),
         axis.ticks.length = unit(0, "pt"),
-        axis.text.y = element_text(size = 10, color = state_colors),
+        axis.text.y = element_text(size = 6, color = state_colors),
         legend.position = c(.56, .68),
         #legend.text = element_text(color = region_colors),
         legend.background = element_rect(fill = "#ffffffb0"))

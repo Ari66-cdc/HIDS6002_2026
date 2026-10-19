@@ -36,7 +36,7 @@ place_fig("common-aestheticss", fig_common_aesthetics(),
 ```{r}
 #| output: asis
 place_fig("cartesian-coordinates", fig_cartesian_coordinates(),
-          w = 4.5, h = 3.6, x = 9, y = 1.4, width = 5)
+          w = 4.5, h = 3.6, x = 9, y = 1.2, width = 5)
 place_fig("fig-temp-houston", fig_temp_houston(),
           w = 4.5, h = 3.6, x = 9, y = 5, width = 5)
 ```
@@ -92,7 +92,7 @@ place_fig("fig-log-ratio", fig_log_ratio(),
 ```{r}
 #| output: asis
 place_fig("qual-color", qual_color(),
-          w = 4.5, h = 3.6, x = 8, y = 2, width = 7.5)
+          w = 4.5, h = 3.6, x = 7, y = 2, width = 8.5)
 ```
 ## Color
 
